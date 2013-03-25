@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <!-- 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/head"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/search_title"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="@color/white" >
+
+            <Button
+                android:id="@+id/locate"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/bt_locate" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:textColor="@color/black" />
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bt_head" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/calling"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="#ff9e05"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/head_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/d_head" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/air" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/cab_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="共有1辆出租车车接收到消息"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/car_license"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:text="请等待时间应答……"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/call_button"
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bt_call_phone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/line"
+            style="@style/view_row_land_line"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/distanceAndTime"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="#ff9e05"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:visibility="gone" >
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/distance" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="05公里"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/time" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="13分钟"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/head"
+        android:clickable="true" />
+
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/land_title"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <Button
+                android:id="@+id/call"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bt_call"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/cancel_call"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/answers_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:weightSum="2" >
+
+                <Button
+                    android:id="@+id/called_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/canel_call" />
+
+                <TextView
+                    android:layout_width="5dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/called_finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ontrain" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+</RelativeLayout>
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
+    
+    <LinearLayout
+        android:id="@+id/map_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
+		<!-- android:id="@+id/head" -->
+        <RelativeLayout
+            android:id="@+id/map_calling_title"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="@color/white"
+           
+             >
+             <!-- android:id="@+id/search_title" -->
+            <Button
+                android:id="@+id/map_calling_title_btn_fresh"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/map_btn_fresh" />
+            <!--android:id="@+id/map_btn_fresh"  -->
+			
+            <TextView
+                android:id="@+id/map_calling_title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:textColor="@color/black" />
+            <!-- android:id="@+id/title" -->
+			
+          
+
+            <Button
+                android:id="@+id/map_calling_title_btn_setting"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/map_btn_setting" />
+            <!--android:id="@+id/map_btn_setting"  -->
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/map_waiting_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            
+            >
+            <!-- android:id="@+id/calling" -->
+  			<LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:background="@drawable/map_calling_bar"
+                >
+                <FrameLayout 
+                     android:layout_width="30dp"
+	                 android:layout_height="30dp"
+	                 android:background="#00000000">
+	            <ProgressBar
+	                android:id="@+id/map_waiting_title_progressBar"
+	                android:layout_width="30dp"
+	                android:layout_height="30dp"
+	                android:layout_centerVertical="true"
+	                
+	                android:background="@drawable/map_progressbar"
+	                android:indeterminateDrawable="@drawable/map_progressbar"
+	                android:visibility="visible" />
+	            <!-- android:id="@+id/progressBar" -->
+	     
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="#00000000"
+                    android:gravity="center"
+                    android:text="60"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+                </FrameLayout>
+
+	            <LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="fill_parent"
+	                android:gravity="center_vertical"
+	                android:orientation="vertical"
+	                android:paddingLeft="10dp"
+	                >
+	                 
+	                <TextView
+	                    android:id="@+id/map_waiting_title_txt_cab_count"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:gravity="center_vertical"
+	                    android:text="共有1辆出租车车接收到消息"
+	                    android:textColor="@color/white" />
+	                <!--android:id="@+id/cab_count"  -->
+	
+	                <TextView
+	                    android:id="@+id/map_waiting_title_txt_car_license"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="5dp"
+	                    android:gravity="center_vertical"
+	                    android:text="请等待时间应答……"
+	                    android:textColor="@color/white" />
+	                <!-- android:id="@+id/car_license" -->
+	            </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        
+			<RelativeLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="120dp"
+			    android:background="@drawable/map_driver_board"
+			    android:id="@+id/map_answer_title"
+			    android:visibility="gone"
+			    
+		    >
+
+            <LinearLayout
+                android:id="@+id/map_answer_title_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp" >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/map_dirver_head"
+                    />
+
+                <TextView 
+                    android:id="@+id/map_driver_head_text"
+                    android:layout_height="wrap_content"
+                	android:layout_width="wrap_content"
+                	android:textSize="15dp"
+                	android:textColor="#FFFFFF"
+                	android:text="张师傅已答应"
+                	android:layout_marginLeft="10dp"
+                
+                   />
+            </LinearLayout>
+             <LinearLayout
+                android:id="@+id/map_answer_title_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:layout_below="@+id/map_answer_title_1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/map_driver_air"
+                    />
+
+                <TextView 
+                    android:id="@+id/map_driver_air_text"
+                    android:layout_height="wrap_content"
+                	android:layout_width="wrap_content"
+                	android:textSize="15dp"
+                	android:textColor="#FFFFFF"
+                	android:text="北汽，京A12345"
+                	android:layout_marginLeft="10dp"
+                
+                   />
+            </LinearLayout>
+             <LinearLayout
+                 android:id="@+id/map_answer_title_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/map_answer_title_2">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/map_driver_distance"
+                    
+                    />
+
+                <TextView 
+                    android:id="@+id/map_driver_air_text"
+                    android:layout_height="wrap_content"
+                	android:layout_width="wrap_content"
+                	android:textSize="15dp"
+                	android:textColor="#FFFFFF"
+                	android:text="05公里"
+                	android:layout_marginLeft="10dp"
+                
+                   />
+                 <ImageView
+	                android:layout_width="15dp"
+	                android:layout_height="15dp"
+	                android:layout_marginLeft="20dp"
+	                android:src="@drawable/map_driver_time" />
+	
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="10dp"
+	                android:text="13分钟"
+	                android:textColor="@color/white" />
+            </LinearLayout>
+            
+            <Button
+                android:id="@+id/call_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/map_driver_call"
+                />
+	        
+        </RelativeLayout>
+    </LinearLayout>
+
+    
+
+    <RelativeLayout
+        android:id="@+id/map_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" >
+			<!-- android:id="@+id/bottom"  -->
+
+        <LinearLayout
+            android:id="@+id/map_calling_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/land_title"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+         
+            >
+
+            <Button
+                android:id="@+id/map_calling_bottom_btn_call"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/map_calling_bottom_btn_call"
+                android:text="现在叫车"
+                android:textSize="20dp"
+                android:textColor="@color/white"
+                />
+            <!-- android:id="@+id/call" -->
+            </LinearLayout>
+            
+			<LinearLayout
+	   		   android:id="@+id/map_waiting_bottom"
+	           android:layout_width="fill_parent"
+	           android:layout_height="wrap_content"
+	           android:background="@drawable/land_title"
+	           android:paddingLeft="10dp"
+	           android:paddingRight="10dp"
+	           android:visibility="gone"
+	          >
+            <Button
+                android:id="@+id/map_waiting_bottom_btn_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/map_waiting_bottom_btn_cancel"
+                android:text="取消叫车"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                />
+            <!-- android:id="@+id/cancel"   -->
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/map_answer_bottom"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+	            android:paddingRight="10dp"
+                android:background="@drawable/land_title"
+                android:weightSum="2" 
+                   android:visibility="gone" >
+            <!--  android:id="@+id/answers_button" -->
+
+                <Button
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/map_answr_bottom_btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/map_waiting_bottom_btn_cancel"
+                    android:text="取消上车"
+                    android:textSize="20dp"
+               	 	android:textColor="@color/black"  />
+                <!--  android:id="@+id/called_cancel" -->
+
+                <TextView
+                    android:layout_width="5dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/map_answr_bottom_btn_finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/map_calling_bottom_btn_call"
+                    android:text="我已上车" 
+                    android:textSize="20dp"
+                	android:textColor="@color/white"/>
+                <!-- android:id="@+id/called_finish" -->
+            </LinearLayout>
+        
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+</RelativeLayout>
