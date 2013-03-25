@@ -1,4 +1,4 @@
-package com.findcab.activity;
+﻿package com.findcab.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,6 +20,8 @@ import com.iflytek.mscdemo.IatActivity;
  * @author yuqunfeng
  * 
  */
+
+
 public class CallActivity extends Activity implements OnClickListener {
 
 	private String start = null;
