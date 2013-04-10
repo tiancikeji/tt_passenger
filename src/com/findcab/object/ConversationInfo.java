@@ -32,7 +32,6 @@ public class ConversationInfo {
 			status_desc = jObject.getString("status_desc");
 			to_id = jObject.getInt("to_id");
 			trip_id = jObject.getInt("trip_id");
-
 			updated_at = jObject.getString("updated_at");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

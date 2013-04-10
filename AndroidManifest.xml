@@ -10,34 +10,36 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
-            android:label="@string/app_name"
-            android:name=".activity.WelcomActivity" >
-            <intent-filter >
+            android:name=".activity.WelcomActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:launchMode="singleInstance"
             android:name=".activity.PassengerActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.LocationOverlay"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" 
+            android:launchMode="singleTask">
         </activity>
         <activity
-            android:launchMode="singleInstance"
             android:name=".activity.RecordActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name="com.findcab.activity.PutDestinationActivity" >
         </activity>
         <activity
             android:name=".activity.Signup"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:launchMode="singleInstance"
             android:name=".activity.CallActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -47,10 +49,13 @@
         </activity>
         <activity android:name="com.iflytek.mscdemo.IatActivity" >
         </activity>
+        <activity android:theme="@style/Transparent" android:name="com.findcab.activity.DialogFrist"/> 
+        <activity android:theme="@style/Transparent" android:name="com.findcab.activity.DialogTwo"/> 
+        <activity android:theme="@style/Transparent" android:name="com.findcab.activity.DialogThree"/>
 
         <service
-            android:enabled="true"
             android:name="com.baidu.location.f"
+            android:enabled="true"
             android:process=":remote" >
         </service>
     </application>
@@ -96,7 +101,6 @@
 
     <!-- 各种权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-   
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

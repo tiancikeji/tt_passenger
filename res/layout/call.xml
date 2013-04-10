@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
-    android:orientation="vertical" >
+    android:background="@drawable/calling_bg"
+    android:orientation="vertical"
+    >
 
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/land_title" >
+        android:layout_height="60dp"
+        android:background="@drawable/calling_title" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,10 +23,12 @@
 
         <Button
             android:id="@+id/cancel"
-            android:layout_width="60dp"
-            android:layout_height="30dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+           	android:text="取消"
             android:background="@drawable/bt_cancel" />
     </RelativeLayout>
 
@@ -34,7 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/head"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingRight="20dp"
+        android:layout_marginTop="20dp" >
 
         <EditText
             android:id="@+id/edit_start"
@@ -46,14 +51,7 @@
             android:selectAllOnFocus="true"
             android:text="我的位置" />
 
-        <Button
-            android:id="@+id/start_cancel"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignRight="@+id/edit_start"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/cancel" />
+        
     </RelativeLayout>
 
     <RelativeLayout
@@ -62,31 +60,92 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/startLayout"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingRight="20dp"
+        android:layout_marginTop="10dp"  >
 
         <AutoCompleteTextView
             android:id="@+id/edit_end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="终点"
+            android:hint="请输入目的地"
             android:inputType="textPostalAddress"
             android:selectAllOnFocus="true" />
-
-        <Button
-            android:id="@+id/end_mic"
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_alignRight="@+id/edit_end"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/mic" />
     </RelativeLayout>
+	<LinearLayout 
+	    android:id="@+id/calling_premium"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/endLayout"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+	    >
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="fill_vertical"
+	        android:text="加价:"
+	        android:layout_gravity="center_vertical"
+	        android:textColor="@color/black"
+	        android:textSize="15dp"
+	        />
+	    <Button
+	        android:id="@+id/calling_premium_btn0" 
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:text="0"
+	        android:gravity="center"
+	        android:layout_marginLeft="10dp"
+	        android:background="@drawable/calling_premiun"
+	        />
+	    <Button
+	        android:id="@+id/calling_premium_btn5"  
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:text="5"
+	        android:gravity="center"
+	         android:background="@drawable/calling_premiun"
+	         android:layout_marginLeft="5dp"
+	        />
+	    <Button 
+	        android:id="@+id/calling_premium_btn10" 
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:text="10"
+	        android:gravity="center"
+	         android:background="@drawable/calling_premiun"
+	         android:layout_marginLeft="5dp"
+	        />
+	    
+	    <Button 
+	        android:id="@+id/calling_premium_btn15" 
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:text="15"
+	        android:gravity="center"
+	          android:background="@drawable/calling_premiun"
+	          android:layout_marginLeft="5dp"
+	        />
+	    
+	    <Button
+	        android:id="@+id/calling_premium_btn20"  
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:text="20"
+	        android:gravity="center"
+	          android:background="@drawable/calling_premiun"
+	          android:layout_marginLeft="5dp"
+	        />
+	        
+	    </LinearLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/endLayout"
+        android:layout_below="@+id/calling_premium"
         android:layout_marginTop="15dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp" >
@@ -94,7 +153,10 @@
         <Button
             android:id="@+id/ok"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:textColor="#FFFAFA"
+            android:background="@drawable/ph_verifi_btn_put"
+            android:textSize="18dp"
             android:text="确认" />
     </RelativeLayout>
 

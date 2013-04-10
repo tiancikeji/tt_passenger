@@ -111,8 +111,8 @@ public class IatActivity extends Activity implements OnClickListener,
 	 */
 	private void initView() {
 		context = this;
-		start_cancel = (Button) findViewById(R.id.start_cancel);
-		start_cancel.setOnClickListener(this);
+		// R.id.start_cancel是在callActivity中，现在先注释掉，以后有用 simsunny
+		// start_cancel = (Button) findViewById(R.id.start_cancel);
 		end_cancel = (Button) findViewById(R.id.end_mic);
 		end_cancel.setOnClickListener(this);
 
@@ -239,18 +239,18 @@ public class IatActivity extends Activity implements OnClickListener,
 		switch (v.getId()) {
 
 		// 转写按钮
-		case R.id.end_mic:
-			showIatDialog();
-			break;
+		// case R.id.end_mic:
+		// showIatDialog();
+		// break;
 
 		case R.id.cancel:
 
 			finish();
 			break;
-		case R.id.start_cancel:
-
-			edit_start.setText("");
-			break;
+		// case R.id.start_cancel:
+		//
+		// edit_start.setText("");
+		// break;
 
 		case R.id.ok:
 			start = edit_start.getText().toString().trim();
@@ -292,6 +292,8 @@ public class IatActivity extends Activity implements OnClickListener,
 	}
 
 	private void searchNearby(String location) {
+
+		// poiSearchInCity(String city, String key)
 		mSearch.poiSearchInCity("北京", location);
 
 		return;
@@ -330,6 +332,7 @@ public class IatActivity extends Activity implements OnClickListener,
 			String province = mSharedPreferences.getString(
 					getString(R.string.preference_key_poi_province),
 					defaultProvince);
+			
 			final String defaultCity = getString(R.string.preference_default_poi_city);
 			String city = mSharedPreferences.getString(
 					getString(R.string.preference_key_poi_city), defaultCity);
@@ -422,6 +425,7 @@ public class IatActivity extends Activity implements OnClickListener,
 				android.R.layout.simple_dropdown_item_1line, array);
 
 		selctList.setAdapter(adapter);
+
 		int width = (int) getResources().getDimension(R.dimen.menu_width);
 		selectWindow = new PopupWindow(select_view, width, edit_end.getWidth(),
 				true);// 创建PopupWindow实例
@@ -441,5 +445,6 @@ public class IatActivity extends Activity implements OnClickListener,
 				sendInfo();
 			}
 		});
+
 	}
 }

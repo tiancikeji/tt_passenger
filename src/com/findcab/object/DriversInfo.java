@@ -11,6 +11,11 @@ import org.json.JSONObject;
  */
 public class DriversInfo {
 
+	/**
+	 * // 0为空，1为满
+	 */
+	private int status;
+	private int online;
 	private String car_license;
 	private String car_service_number;
 	private String car_type;
@@ -23,11 +28,6 @@ public class DriversInfo {
 	private String password;
 	private int rate;
 	private String updated_at;
-	/**
-	 * // 0为空，1为满
-	 */
-	private int status;
-	private int online;
 
 	public DriversInfo(JSONObject jObject) {
 
@@ -46,6 +46,7 @@ public class DriversInfo {
 			updated_at = jObject.getString("updated_at");
 			status = jObject.getInt("status");
 			online = jObject.getInt("online");
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

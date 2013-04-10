@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    >
+    <LinearLayout 
+	    android:layout_alignParentBottom="true"
+	    android:layout_width="fill_parent"
+	    android:layout_height="200dp"
+	    android:background="@drawable/dialog_background"
+	    android:orientation="vertical"
+    >
+	    <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    	android:layout_height="40dp"
+	   
+	    >
+	        <TextView 
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="确定要取消此次叫车服务"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	   
+	    >
+	        <Button
+	            android:id="@+id/dialog_two_cancel"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="确定取消"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            android:background="@drawable/dialog_btn_r"
+	            />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	   
+	    >
+	        <Button
+	             android:id="@+id/dialog_two_contiune"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="继续叫车"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            android:background="@drawable/dialog_btn_b"
+	            />
+	    </LinearLayout>
+    </LinearLayout>
+
+    
+
+</RelativeLayout>

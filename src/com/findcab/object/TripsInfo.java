@@ -2,6 +2,7 @@ package com.findcab.object;
 
 import java.io.Serializable;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -16,63 +17,40 @@ public class TripsInfo implements Serializable {
 	 * 
 	 */
 	private static long serialVersionUID = 8246601128965437499L;
+	private String appointment;
+	private String created_at;
+	private String end;
+	private String end_lat;
+	private String end_lng;
+	private int id;
+	private int passenger_id;
+	private String start;
+	private String start_lat;
+	private String start_lng;
+	private String updated_at;
+
 	/**
 	 * 
 	 */
 
-	private String passenger_id;
-	private String start;
-	private double start_lat;
-	private double start_lng;
-
-	private String end;
-	private double end_lat;
-	private double end_lng;
-	private String appointment;
-	private String updated_at;
-	private String created_at;
-
-	private int id;
-
 	public TripsInfo(JSONObject jObject) {
+		try {
+			appointment = jObject.getString("appointment");
+			created_at = jObject.getString("created_at");
+			end = jObject.getString("end");
+			end_lat = jObject.getString("end_lat");
+			end_lng = jObject.getString("end_lng");
+			id = jObject.getInt("id");
+			passenger_id = jObject.getInt("passenger_id");
+			start = jObject.getString("start");
+			start_lat = jObject.getString("start_lat");
+			start_lng = jObject.getString("start_lng");
+			updated_at = jObject.getString("updated_at");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		passenger_id = jObject.optString("passenger_id");
-		start = jObject.optString("start");
-		start_lat = jObject.optDouble("start_lat");
-		start_lng = jObject.optDouble("start_lng");
-
-		end = jObject.optString("end");
-		end_lat = jObject.optDouble("end_lat");
-		end_lng = jObject.optDouble("end_lng");
-
-		id = jObject.optInt("id");
-		appointment = jObject.optString("appointment");
-		updated_at = jObject.optString("updated_at");
-		created_at = jObject.optString("created_at");
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public static void setSerialversionuid(long serialversionuid) {
-		serialVersionUID = serialversionuid;
-	}
-
-	public String getPassenger_id() {
-		return passenger_id;
-	}
-
-	public void setPassenger_id(String passengerId) {
-		passenger_id = passengerId;
-	}
-
-	public String getStart() {
-		return start;
-	}
-
-	public void setStart(String start) {
-		this.start = start;
 	}
 
 	public static long getSerialVersionUID() {
@@ -83,44 +61,20 @@ public class TripsInfo implements Serializable {
 		TripsInfo.serialVersionUID = serialVersionUID;
 	}
 
-	public String getUpdated_at() {
-		return updated_at;
+	public String getAppointment() {
+		return appointment;
 	}
 
-	public void setUpdated_at(String updatedAt) {
-		updated_at = updatedAt;
+	public void setAppointment(String appointment) {
+		this.appointment = appointment;
 	}
 
 	public String getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(String createdAt) {
-		created_at = createdAt;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public double getStart_lat() {
-		return start_lat;
-	}
-
-	public void setStart_lat(double startLat) {
-		start_lat = startLat;
-	}
-
-	public double getStart_lng() {
-		return start_lng;
-	}
-
-	public void setStart_lng(double startLng) {
-		start_lng = startLng;
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
 	}
 
 	public String getEnd() {
@@ -131,28 +85,68 @@ public class TripsInfo implements Serializable {
 		this.end = end;
 	}
 
-	public double getEnd_lat() {
+	public String getEnd_lat() {
 		return end_lat;
 	}
 
-	public void setEnd_lat(double endLat) {
-		end_lat = endLat;
+	public void setEnd_lat(String end_lat) {
+		this.end_lat = end_lat;
 	}
 
-	public double getEnd_lng() {
+	public String getEnd_lng() {
 		return end_lng;
 	}
 
-	public void setEnd_lng(double endLng) {
-		end_lng = endLng;
+	public void setEnd_lng(String end_lng) {
+		this.end_lng = end_lng;
 	}
 
-	public String getAppointment() {
-		return appointment;
+	public int getId() {
+		return id;
 	}
 
-	public void setAppointment(String appointment) {
-		this.appointment = appointment;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getPassenger_id() {
+		return passenger_id;
+	}
+
+	public void setPassenger_id(int passenger_id) {
+		this.passenger_id = passenger_id;
+	}
+
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getStart_lat() {
+		return start_lat;
+	}
+
+	public void setStart_lat(String start_lat) {
+		this.start_lat = start_lat;
+	}
+
+	public String getStart_lng() {
+		return start_lng;
+	}
+
+	public void setStart_lng(String start_lng) {
+		this.start_lng = start_lng;
+	}
+
+	public String getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(String updated_at) {
+		this.updated_at = updated_at;
 	}
 
 }

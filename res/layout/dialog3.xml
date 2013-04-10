@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    >
+    <LinearLayout 
+        android:layout_alignParentBottom="true"
+         android:layout_width="fill_parent"
+    android:layout_height="320dp"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical"
+    >
+	    <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	   
+	    >
+	        <TextView 
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="取消原因"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	   
+	    >
+	        <Button
+	            android:id="@+id/dialog_three_1"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="已选择其他交通方式"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            android:background="@drawable/dialog_btn_b"
+	            />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	   
+	    >
+	        <Button
+	            android:id="@+id/dialog_three_2"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="已经在路上打到车"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            android:background="@drawable/dialog_btn_b"
+	            />
+	    </LinearLayout>
+	     <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	   
+	    >
+	        <Button
+	            android:id="@+id/dialog_three_3"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="等待时间太长"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            android:background="@drawable/dialog_btn_b"
+	            />
+	    </LinearLayout>
+	     <LinearLayout
+	        android:layout_marginTop="20dp" 
+	        android:layout_marginLeft="20dp" 
+	        android:layout_marginRight="20dp" 
+	         android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	   
+	    >
+	        <Button
+	            android:id="@+id/dialog_three_4"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="其他"
+	            android:textColor="#FFFFFF"
+	            android:gravity="center"
+	            android:background="@drawable/dialog_btn_b"
+	            />
+	    </LinearLayout>
+    </LinearLayout>
+
+    
+
+</RelativeLayout>

@@ -21,6 +21,7 @@ public class DriversHandler extends AbsHandler {
 	public Object parseResponse(String responseStr) {
 		// TODO Auto-generated method stub
 		List<DriversInfo> listInfo = null;
+		System.out.println("從服務器上返回司機信息---->"+responseStr);
 		if (responseStr != null) {
 
 			JSONObject jsonObject;

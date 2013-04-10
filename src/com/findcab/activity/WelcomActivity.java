@@ -34,15 +34,15 @@ public class WelcomActivity extends Activity {
 				Intent mainIntent = null;
 				mainIntent = new Intent(WelcomActivity.this,
 						LandActivity.class);
-//				if (isSignup()) {
-//
-//					mainIntent = new Intent(WelcomActivity.this,
-//							LocationOverlay.class);
-//				} else {
-//
-//					mainIntent = new Intent(WelcomActivity.this,
-//							LandActivity.class);
-//				}
+				if (isSignup()) {
+
+					mainIntent = new Intent(WelcomActivity.this,
+							LocationOverlay.class);
+				} else {
+
+					mainIntent = new Intent(WelcomActivity.this,
+							LandActivity.class);
+				}
 				startActivity(mainIntent);
 				finish();
 			}
@@ -55,9 +55,9 @@ public class WelcomActivity extends Activity {
 	 */
 	private boolean isSignup() {
 		SharedPreferences sharedata = getSharedPreferences("data", 0);
-		String name = sharedata.getString("name", "");
-		String password = sharedata.getString("password", "");
-		if (!name.equals("") && !password.equals("")) {
+		String mobile = sharedata.getString("psMobile", "");
+		String password = sharedata.getString("psPassword", "");
+		if (!mobile.equals("") && !password.equals("")) {
 			return true;
 		}
 

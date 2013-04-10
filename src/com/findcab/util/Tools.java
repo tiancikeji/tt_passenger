@@ -67,7 +67,6 @@ public class Tools {
 	public static String getDeviceId(Context context) {
 		String android_id = Secure.getString(context.getContentResolver(),
 				Secure.ANDROID_ID);
-		System.out.println("android_id---->" + android_id);
 		return android_id;
 	}
 
@@ -93,8 +92,6 @@ public class Tools {
 	public static void exitDialog(final Context context) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-		// builder.setIcon(R.drawable.icon);
-		// builder.setTitle("你确定要离开吗？");
 		View aalayout = View.inflate(context, R.layout.exit, null);
 		// aa.setCancelable(true);
 		// aa.setTitle(R.string.lockscreen_charged);
@@ -107,10 +104,9 @@ public class Tools {
 				exitPro(context);
 			}
 		});
+		
 		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// 这里添加点击确定后的逻辑
-				// new AlertDialog.Builder(context).setMessage("你选择了取消").show();
 			}
 		});
 		builder.create().show();

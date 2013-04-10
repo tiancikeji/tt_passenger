@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -106,6 +109,27 @@ public class HttpTools {
 	// return null;
 	// }
 
+	/**
+	 * 用来返回url的地址 simsunny
+	 * @param url
+	 * @param data
+	 * @return String 
+	 */
+	private static String buildUri(String url, Map<String,String> data){
+		String result=null;
+		result=url+"?";
+		for(Object obj: data.keySet()){
+			String key = (String)obj;
+			result=result+key+"=";
+			String value =(String)data.get(key);
+			result=result+value+"&";
+		}
+		
+		result=result.substring(0,result.length()-1);
+		
+		return  result;
+	}
+	
 	private static Uri.Builder buildGetMethod(String url,
 			Map<String, String> data) {
 		final Uri.Builder builder = new Uri.Builder();
@@ -192,6 +216,7 @@ public class HttpTools {
 
 		if (data != null) {
 			url = buildGetMethod(url, data).build().toString();
+			System.out.println("------------------------------------->"+url);
 		}
 
 		System.out.println("url----->" + url);
@@ -213,20 +238,18 @@ public class HttpTools {
 	public static String PostDate(String url, Map<String, String> data) {
 		List<NameValuePair> list = new ArrayList<NameValuePair>();
 		if (data != null) {
-
 			NameValuePair pair;
 			for (Map.Entry<String, String> m : data.entrySet()) {
 				pair = new BasicNameValuePair(m.getKey(), m.getValue());
 				list.add(pair);
 			}
-
 		}
-
 		try {
 			HttpEntity httpEntity = new UrlEncodedFormEntity(list, HTTP.UTF_8);//
 			// 使用编码构建Post实体
 			HttpPost post = new HttpPost(url);
-			System.out.println("url---toString---->" + url.toString());
+			System.out.println("url--------------------------->" + url.toString());
+			
 			post.setEntity(httpEntity);// 设置Post实体
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse response = client.execute(post);// 执行Post方法
@@ -267,7 +290,7 @@ public class HttpTools {
 				postData.add(new BasicNameValuePair(m.getKey(), m.getValue()));
 			}
 		}
-		System.out.println("-------url------" + url);
+		System.out.println("url---------------------->" + url);
 		HttpPost httpPost = new HttpPost(url);
 		BasicHttpParams httpParams = new BasicHttpParams();
 		// HttpConnectionParams.setConnectionTimeout(httpParams, 80000);
@@ -314,9 +337,25 @@ public class HttpTools {
 
 	public static Object getAndParse(String url, Map<String, String> data,
 			Ihandler ihandler) {
-		if (data != null) {
-			url = buildGetMethod(url, data).build().toString();
-		}
+		
+		url=buildUri(url,data);
+		System.out.println("------url url----------" + url);
+		
+//		List<NameValuePair> list = new ArrayList<NameValuePair>();
+//		if (data != null) {
+//			NameValuePair pair;
+//			for (Map.Entry<String, String> m : data.entrySet()) {
+//				pair = new BasicNameValuePair(m.getKey(), m.getValue());
+//				list.add(pair);
+//			}
+//		}
+//		url += list.toString();
+		
+//		if (data != null) {
+//			url = buildGetMethod(url, data).build().toString();
+//			System.out.println("------------------------------------->"+url);
+//		}
+		
 		System.out.println("------url url----------" + url);
 		int status = 0;
 		HttpGet httpRequest = new HttpGet(url);
@@ -337,9 +376,6 @@ public class HttpTools {
 				InputStream ins = httpEntity.getContent();
 				Object resultMessage = ihandler.parseResponse(ins);
 				return resultMessage;
-				// jsonStr = EntityUtils.toString(httpResponse.getEntity(),
-				// "UTF-8");
-				// System.out.println("jsonStr================>" + jsonStr);
 			}
 
 		} catch (Exception e) {
@@ -351,6 +387,7 @@ public class HttpTools {
 			return null;
 		}
 		return null;
+	
 	}
 
 	/**
@@ -372,7 +409,9 @@ public class HttpTools {
 		// }
 		responseStatus = 0;
 		if (data != null) {
+			//url=buildUri(url,data);
 			url = buildGetMethod(url, data).build().toString();
+			System.out.println("url------------------------------------->"+url);
 		}
 		/*
 		 * % | ^针对于http://202.165.178.45/sns/api/weibo/search/?sessionId=
@@ -419,7 +458,7 @@ public class HttpTools {
 			}
 			// Log.e("HttpTools-get-end", "end: "
 			// + (System.currentTimeMillis() - start) + "ms , " + url);
-			System.out.println("end: " + (System.currentTimeMillis() - start));
+			System.out.println("end:getAndParse " + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			if (e.getMessage() != null)
 				Log.e("HttpTools-c", e.getMessage());
