@@ -17,14 +17,19 @@ import com.baidu.mapapi.map.PopupClickListener;
 import com.baidu.mapapi.map.PopupOverlay;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.findcab.activity.LocationOverlay;
+import com.findcab.object.Drivers;
 import com.findcab.object.DriversInfo;
 
 public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	public List<OverlayItem> mGeoList = new ArrayList<OverlayItem>();
 	private List<DriversInfo>  driversList = null;
+	private Drivers driverInfo=null;
 	private Context mContext;
 	static PopupOverlay pop = null;
+	private final int DRIVERS=1;
+	private final int DRIVER=2;
+	private int judge;
 
 	public MyItemizedOverlay(Context context, Drawable maker,
 			List<OverlayItem> geoList) {
@@ -58,8 +63,28 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				Log.d("drivertest  ", "clickpop");
 			}
 		});
+		judge=DRIVERS;
 		populate();
 	}
+	public MyItemizedOverlay(Context context, Drawable maker,
+			List<OverlayItem> geoList, Drivers driverInfo) {
+		super(maker);
+		this.mContext = context;
+		this.mGeoList = geoList;
+		this.driverInfo=driverInfo;
+		System.out.println("显示的类MyItemizedOverlay的geoList数量-------->"+mGeoList.size());
+		System.out.println("显示的类MyItemizedOverlay的driversList数量-------->"+" ");
+		pop = new PopupOverlay(LocationOverlay.mMapView,
+				new PopupClickListener() {
+			@Override
+			public void onClickedPopup() {
+				Log.d("drivertest  ", "clickpop");
+			}
+		});
+		judge=DRIVER;
+		populate();
+	}
+	
 
 	@Override
 	protected OverlayItem createItem(int arg0) {
@@ -109,24 +134,33 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			
 			Bitmap bitmap = MyBitmap.createBitmap(popbitmap,
 					LocationOverlay.address);
-			if(mGeoList.get(index).getTitle() != null && !mGeoList.get(index).getTitle().equals("")){
-				Toast.makeText(this.mContext, mGeoList.get(index).getTitle(),
-						Toast.LENGTH_SHORT).show();
-			}
 			
+//			Toast.makeText(this.mContext, mGeoList.get(index).getTitle(),
+//					Toast.LENGTH_SHORT).show();
+
 			pop.showPopup(bitmap, mGeoList.get(index).getPoint(),100);
-			
+
 		}
 		
 		if(index>0){
-			
-			int driverIndex=index-1;
-			DriversInfo driver= driversList.get(driverIndex);
-			Bitmap bitmap = MyBitmap.createBitmap(popbitmap,
-					driver.getName()+","+driver.getCar_license());
-			pop.showPopup(bitmap, mGeoList.get(index).getPoint(),50);
-			System.out.println("显示的类MyItemizedOverlay的图像index-------->"+index);
-			System.out.println("显示的类MyItemizedOverlay的司机信息index-------->"+driverIndex);
+			if(judge==DRIVERS){
+				
+				int driverIndex=index-1;
+				DriversInfo driver= driversList.get(driverIndex);
+				Bitmap bitmap = MyBitmap.createBitmap(popbitmap,
+						driver.getName()+","+driver.getCar_license());
+				pop.showPopup(bitmap, mGeoList.get(index).getPoint(),50);
+				System.out.println("显示的类MyItemizedOverlay的图像index-------->"+index);
+				System.out.println("显示的类MyItemizedOverlay的司机信息index-------->"+driverIndex);
+			}
+			else if(judge==DRIVER){
+				Bitmap bitmap = MyBitmap.createBitmap(popbitmap,
+						driverInfo.getName()+","+driverInfo.getCar_license()+"/n"+
+				driverInfo.getCar_type());
+				pop.showPopup(bitmap, mGeoList.get(index).getPoint(),50);
+			}else{
+				
+			}
 		}
 
 		return super.onTap(index);

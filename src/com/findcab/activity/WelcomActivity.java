@@ -8,21 +8,22 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
-import android.widget.RelativeLayout;
+import cn.jpush.android.api.JPushInterface;
 
 import com.findcab.R;
 
 public class WelcomActivity extends Activity {
-	
-	//RelativeLayout welcom_layout;
-	
+
+	// RelativeLayout welcom_layout;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.welcome);
-		//welcom_layout = (RelativeLayout) findViewById(R.id.welcom_layout);
+		initJPush();
+		// welcom_layout = (RelativeLayout) findViewById(R.id.welcom_layout);
 		AnimationSet animationset = new AnimationSet(true);
 		AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
 		alphaAnimation.setDuration(1100);
@@ -32,8 +33,7 @@ public class WelcomActivity extends Activity {
 			@Override
 			public void run() {
 				Intent mainIntent = null;
-				mainIntent = new Intent(WelcomActivity.this,
-						LandActivity.class);
+				mainIntent = new Intent(WelcomActivity.this, LandActivity.class);
 				if (isSignup()) {
 
 					mainIntent = new Intent(WelcomActivity.this,
@@ -62,6 +62,10 @@ public class WelcomActivity extends Activity {
 		}
 
 		return false;
+	}
+
+	private void initJPush() {
+		JPushInterface.init(getApplicationContext());
 	}
 
 }

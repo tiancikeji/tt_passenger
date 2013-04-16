@@ -48,66 +48,7 @@ import com.findcab.handler.Ihandler;
 public class HttpTools {
 	public static int responseStatus;
 
-	/**
-	 * 执行get方法
-	 * 
-	 * @param context
-	 * @param url
-	 * @param data
-	 * @param ihandler
-	 * @return
-	 */
-	// public static Object getAndParse(Context context, String url,
-	// Map<String, String> data, Ihandler ihandler) {
-	// responseStatus = 0;
-	//
-	// if (data != null) {
-	// url = buildGetMethod(url, data).build().toString();
-	// }
-	// System.out.println("-------url------" + url);
-	// HttpPost httpPost = new HttpPost(url);
-	// BasicHttpParams httpParams = new BasicHttpParams();
-	// HttpConnectionParams.setConnectionTimeout(httpParams, 8000);
-	// HttpConnectionParams.setSoTimeout(httpParams, 8000);
-	// DefaultHttpClient httpClient = new DefaultHttpClient(httpParams);
-	// HttpResponse response = null;
-	//
-	// try {
-	//
-	// response = httpClient.execute(httpPost);
-	//
-	// if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-	// responseStatus = 1;
-	// } else {
-	// responseStatus = 2;
-	// httpPost.abort();
-	// }
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	//
-	// if (e.getMessage() != null)
-	// Log.e("HttpTools", e.getMessage());
-	// responseStatus = 2;
-	//
-	// }
-	//
-	// // 响应正常
-	// if (responseStatus != 2) {
-	// try {
-	// HttpEntity httpEntity = response.getEntity();
-	// InputStream ins = httpEntity.getContent();
-	// Object resultMessage = ihandler.parseResponse(ins);
-	// return resultMessage;
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// if (e.getMessage() != null)
-	// Log.e("HttpTools", e.getMessage());
-	// responseStatus = 3;
-	// }
-	// }
-	//
-	// return null;
-	// }
+	
 
 	/**
 	 * 用来返回url的地址 simsunny
@@ -249,7 +190,6 @@ public class HttpTools {
 			// 使用编码构建Post实体
 			HttpPost post = new HttpPost(url);
 			System.out.println("url--------------------------->" + url.toString());
-			
 			post.setEntity(httpEntity);// 设置Post实体
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse response = client.execute(post);// 执行Post方法
@@ -389,6 +329,67 @@ public class HttpTools {
 		return null;
 	
 	}
+	/**
+	 * simsunny
+	 * @param url
+	 * @param data
+	 * @param ihandler
+	 * @return
+	 */
+	public static Object getAndParse(String url, int data,
+			Ihandler ihandler) {
+		
+		url=url+data;
+		System.out.println("------url simsunny url----------" + url);
+		
+//		List<NameValuePair> list = new ArrayList<NameValuePair>();
+//		if (data != null) {
+//			NameValuePair pair;
+//			for (Map.Entry<String, String> m : data.entrySet()) {
+//				pair = new BasicNameValuePair(m.getKey(), m.getValue());
+//				list.add(pair);
+//			}
+//		}
+//		url += list.toString();
+		
+//		if (data != null) {
+//			url = buildGetMethod(url, data).build().toString();
+//			System.out.println("------------------------------------->"+url);
+//		}
+		
+		System.out.println("------url url----------" + url);
+		int status = 0;
+		HttpGet httpRequest = new HttpGet(url);
+		try {
+			HttpParams httpParameters = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+			// HttpConnectionParams.setSoTimeout(httpParameters, 50000);
+			HttpConnectionParams.setTcpNoDelay(httpParameters, true);
+			
+			HttpClient httpclient = new DefaultHttpClient(httpParameters);
+			HttpResponse httpResponse = httpclient.execute(httpRequest);
+			
+			status = httpResponse.getStatusLine().getStatusCode();
+			
+			if (status == HttpStatus.SC_OK) {
+				
+				HttpEntity httpEntity = httpResponse.getEntity();
+				InputStream ins = httpEntity.getContent();
+				Object resultMessage = ihandler.parseResponse(ins);
+				return resultMessage;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			System.out
+			.println("==============connection wifi fail,e.printStackTrace() : "
+					+ e.getMessage());
+			return null;
+		}
+		return null;
+		
+	}
 
 	/**
 	 * 执行get方法
@@ -446,7 +447,7 @@ public class HttpTools {
 			// Log.e("HttpTools-get-start", "start: " + start + ", context: "
 			// + context);
 
-			System.out.println("start: " + start);
+			System.out.println("start: ------->getAndParse" + start);
 			response = httpClient.execute(httpRequest);
 
 			int status = response.getStatusLine().getStatusCode();

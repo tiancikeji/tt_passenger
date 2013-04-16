@@ -247,7 +247,7 @@ public class PutDestinationActivity extends Activity  {
 		
 		DBListView.setVisibility(View.GONE);
 		listView.setVisibility(View.VISIBLE);
-
+		
 		if(listMap.size()>0){
 			listMap.clear();
 		}

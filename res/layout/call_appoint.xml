@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+    >
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:background="@drawable/calling_bg"
+	    android:orientation="vertical"
+	    android:visibility="gone"
+	    >
+	
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="60dp"
+	        android:background="@drawable/calling_title" >
+	        <Button 
+	            android:id="@+id/call_appoint_back"
+	            android:layout_width="30dp"
+	            android:layout_height="30dp"
+	            android:background="@drawable/setting_back"
+	            android:layout_centerVertical="true"
+	            android:layout_marginLeft="30dp"/>
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerInParent="true"
+	            android:text="预约叫车"
+	            android:textColor="@color/black"
+	            android:textSize="22dp" />
+	
+	    </RelativeLayout>
+	
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:layout_marginTop="20dp"
+	        android:layout_marginLeft="20dp"
+	        android:layout_marginRight="20dp"
+	        android:background="@drawable/put_frame" >
+	
+	        <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:inputType="textPostalAddress"
+	            android:text="请选择用车时间" />
+	    </RelativeLayout>
+	
+	     <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:layout_marginTop="20dp"
+	        android:layout_marginLeft="20dp"
+	        android:layout_marginRight="20dp"
+	        android:background="@drawable/put_frame" >
+	
+	        <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:inputType="textPostalAddress"
+	            android:text="请输入出发地点" />
+	    </RelativeLayout>
+	    
+	      <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:layout_marginTop="20dp"
+	        android:layout_marginLeft="20dp"
+	        android:layout_marginRight="20dp"
+	        android:background="@drawable/put_frame" >
+	
+	        <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:inputType="textPostalAddress"
+	            android:text="请输入目的地" />
+	    </RelativeLayout>
+	    
+		<LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="40dp"
+	        android:paddingLeft="20dp"
+	        android:paddingRight="20dp"
+	        android:orientation="horizontal"
+	        android:layout_marginTop="20dp"
+	        android:gravity="center"
+		    >
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="fill_vertical"
+		        android:text="加价:"
+		        android:layout_gravity="center_vertical"
+		        android:textColor="@color/black"
+		        android:textSize="15dp"
+		        />
+		    <Button
+		        android:id="@+id/calling_premium_btn0" 
+		        android:layout_width="40dp"
+		        android:layout_height="40dp"
+		        android:text="0"
+		        android:gravity="center"
+		        android:layout_marginLeft="10dp"
+		        android:background="@drawable/calling_premiun"
+		        />
+		    <Button
+		        android:id="@+id/calling_premium_btn5"  
+		        android:layout_width="40dp"
+		        android:layout_height="40dp"
+		        android:text="5"
+		        android:gravity="center"
+		         android:background="@drawable/calling_premiun"
+		         android:layout_marginLeft="5dp"
+		        />
+		    <Button 
+		        android:id="@+id/calling_premium_btn10" 
+		        android:layout_width="40dp"
+		        android:layout_height="40dp"
+		        android:text="10"
+		        android:gravity="center"
+		         android:background="@drawable/calling_premiun"
+		         android:layout_marginLeft="5dp"
+		        />
+		    
+		    <Button 
+		        android:id="@+id/calling_premium_btn15" 
+		        android:layout_width="40dp"
+		        android:layout_height="40dp"
+		        android:text="15"
+		        android:gravity="center"
+		          android:background="@drawable/calling_premiun"
+		          android:layout_marginLeft="5dp"
+		        />
+		    
+		    <Button
+		        android:id="@+id/calling_premium_btn20"  
+		        android:layout_width="40dp"
+		        android:layout_height="40dp"
+		        android:text="20"
+		        android:gravity="center"
+		          android:background="@drawable/calling_premiun"
+		          android:layout_marginLeft="5dp"
+		        />
+		        
+		    </LinearLayout>
+	
+	
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/calling_premium"
+	        android:layout_marginTop="15dp"
+	        android:paddingLeft="20dp"
+	        android:paddingRight="20dp" >
+	
+	        <Button
+	            android:id="@+id/ok"
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp"
+	            android:textColor="#FFFAFA"
+	            android:background="@drawable/ph_verifi_btn_put"
+	            android:textSize="18dp"
+	            android:text="确认" />
+	    </RelativeLayout>
+	    
+	</LinearLayout>
+	
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:background="#66000000"
+	    android:visibility="visible"
+	    >
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	   	    android:layout_height="320dp"
+	   	    android:background="@drawable/dialog_background"
+	   	    android:paddingLeft="10dp"
+	   	    android:paddingRight="10dp"
+	   	    android:layout_alignParentBottom="true"
+	    >
+	      <Button
+	        android:layout_marginTop="10dp" 
+	      	android:layout_width="fill_parent"
+	   	    android:layout_height="40dp"
+	   	    android:text="确定"
+	   	    android:textColor="@color/white"
+	   	    android:gravity="center"
+	   	    android:background="@drawable/dialog_btn_b"
+	   	    />  
+	    </LinearLayout>
+	</RelativeLayout>
+</FrameLayout>

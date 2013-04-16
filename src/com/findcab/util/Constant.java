@@ -26,8 +26,4 @@ public class Constant {
 
 	public static final String GEOCODE = "http://maps.googleapis.com/maps/api/geocode/xml";
 
-	
-	public static final String VERSION_ID= "1.0.0";//版本号
-	public static final int DATABASRE_VERSION = 1;//数据库版本
-	
 }

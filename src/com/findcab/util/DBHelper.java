@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase db;  
 	
 	public DBHelper(Context c){
-		super(c, DB_NAME, null, Constant.DATABASRE_VERSION);//数据库版本号用来数据库升级
+		super(c, DB_NAME, null, 2);
 	}
 	
 	public DBHelper(Context context, String name, CursorFactory factory,

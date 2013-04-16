@@ -26,27 +26,25 @@ public class Passengers implements Serializable {
 	private String password;
 	private String updated_at;
 
-
 	public Passengers(JSONObject jObject) {
 
 		try {
-
 			created_at = jObject.getString("created_at");
 			id = jObject.getInt("id");
 			lat = jObject.getDouble("lat");
 			lng = jObject.getDouble("lng");
-			//	mobile = jObject.getInt("mobile");
+		//	mobile = jObject.getInt("mobile");
 			mobile = jObject.getString("mobile");//simsunny
-
+			
+			
 			name = jObject.getString("name");
 			password = jObject.getString("password");
 			updated_at = jObject.getString("updated_at");
-
-
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	public String getCreated_at() {
@@ -84,16 +82,16 @@ public class Passengers implements Serializable {
 	public String getMobile() {
 		return mobile;
 	}
-	//	public int getMobile() {
-	//		return mobile;
-	//	}
+//	public int getMobile() {
+//		return mobile;
+//	}
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	//	public void setMobile(int mobile) {
-	//		this.mobile = mobile;
-	//	}
+//	public void setMobile(int mobile) {
+//		this.mobile = mobile;
+//	}
 
 	public String getName() {
 		return name;

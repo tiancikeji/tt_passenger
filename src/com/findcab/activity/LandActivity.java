@@ -45,7 +45,6 @@ import com.findcab.object.Passengers;
 import com.findcab.util.Constant;
 import com.findcab.util.HttpTools;
 import com.findcab.util.MD5;
-import com.findcab.util.MyLogTools;
 import com.findcab.util.RandomValidateCode;
 import com.findcab.util.Tools;
 
@@ -154,7 +153,6 @@ public class LandActivity extends Activity implements OnClickListener {
 					butt_verification.setText("获取验证码");
 					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
 					butt_verification.setEnabled(true);
-					//这里应该有个杀死进程的方法的的，以后再想吧
 					break;
 				}
 			case SUCCESS:
@@ -307,45 +305,44 @@ public class LandActivity extends Activity implements OnClickListener {
 			
 			if(result!=null){
 				try {
-					MyLogTools.e("LandActivity-Land", "="+result);
+					System.out.println("乘客注册的返回 -------------------->"+result);
+					
 					JSONObject jsonObject = new JSONObject(result);
 					JSONObject passenger = jsonObject.optJSONObject("passenger");
-					if(passenger == null){
-						MyLogTools.e("认证失败", "注册失败");
-						Toast.makeText(context, "登录失败!", Toast.LENGTH_SHORT).show();
-					}else{
-						psInfo= new Passengers(passenger);
-						if(passenger!=null){
-							
-//								String androidDevice = passenger.optString("androidDevice");
-//								String creat_at = passenger.optString("created_at");
-//								String lat = passenger.optString("lat");
-//								String lag = passenger.optString("lag");
-//								String mobile = a.optString("mobile");
-//							    pssengersID = passenger.optInt("id");
-//								psInfo= new Passengers(passenger );
-							
-							String psMobile = passenger.optString("mobile");
-							String psPssword = passenger.optString("password");
-							int   psID=passenger.optInt("id");
-							
-							System.out.println("注册乘客的电话--------------------->"+psMobile);
-							System.out.println("注册乘客的密码--------------------->"+psPssword);
-							System.out.println("注册乘客的Id--------------------->"+psID);
-							
-							save(psMobile,psPssword,psID);
-							
-							if(psMobile.equals(mobile)&&verification.equals(psPssword)){
-								
-								Intent i =new Intent(LandActivity.this,LocationOverlay.class );
-								startActivity(i);
-								this.finish();
-							}else{
-								Toast.makeText(context, "登录失败，请核对手机号和验证码", 1000).show();
-							}
-						}
-					}
 					
+					psInfo= new Passengers(passenger);
+					
+					if(passenger!=null){
+						
+//							String androidDevice = passenger.optString("androidDevice");
+//							String creat_at = passenger.optString("created_at");
+//							String lat = passenger.optString("lat");
+//							String lag = passenger.optString("lag");
+//							String mobile = a.optString("mobile");
+//						    pssengersID = passenger.optInt("id");
+//							psInfo= new Passengers(passenger );
+						
+						
+						String psMobile = passenger.optString("mobile");
+						String psPssword = passenger.optString("password");
+						int   psID=passenger.optInt("id");
+						
+						System.out.println("注册乘客的电话--------------------->"+psMobile);
+						System.out.println("注册乘客的密码--------------------->"+psPssword);
+						System.out.println("注册乘客的Id--------------------->"+psID);
+						
+						save(psMobile,psPssword,psID);
+						
+						if(psMobile.equals(mobile)&&verification.equals(psPssword)){
+							
+							Intent i =new Intent(LandActivity.this,LocationOverlay.class );
+							startActivity(i);
+							this.finish();
+						}else{
+							Toast.makeText(context, "登录失败，请核对手机号和验证码", 1000);
+						}
+						
+					}
 				
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
