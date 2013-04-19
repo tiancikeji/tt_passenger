@@ -2,45 +2,29 @@ package com.findcab.activity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.JarInputStream;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.DefaultClientConnection;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.findcab.R;
-import com.findcab.handler.BaseHandler;
 import com.findcab.object.Passengers;
 import com.findcab.util.Constant;
 import com.findcab.util.HttpTools;
@@ -54,7 +38,7 @@ import com.findcab.util.Tools;
  * @author yuqunfeng
  * 
  */
-public class LandActivity extends Activity implements OnClickListener {
+public class LandActivity extends Activity implements OnClickListener,BDLocationListener{
 
 	//private EditText nameEditText = null;修改ui后没用了 simsunny
 	//private EditText passEditText = null;修改ui后没用了 simsunny
@@ -91,7 +75,11 @@ public class LandActivity extends Activity implements OnClickListener {
 	
 	Passengers info;
 	private String randomStr = null;
-
+	
+	private double lat;// 经度
+	private double lng;// 纬度
+	private LocationClient mLocClient;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,7 +89,14 @@ public class LandActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.land2);
 		Tools.init();
 		initView();
+		startLocation();
+	}
 
+
+	@Override
+	protected void onDestroy() {
+		mLocClient.stop();
+		super.onDestroy();
 	}
 
 
@@ -125,7 +120,6 @@ public class LandActivity extends Activity implements OnClickListener {
 				countRunning=true;
 				btnChanged();
 				getVerification();
-					;
 			} else {
 				Tools.myToast(context, "请输入手机号码！");
 			}
@@ -224,7 +218,7 @@ public class LandActivity extends Activity implements OnClickListener {
 		butt_verification.setOnClickListener(this);
 		
 		if (!HttpTools.checkNetWork(context)){
-			Toast. makeText(this, "请您连接网络", 1000);
+			Toast. makeText(this, "请您连接网络", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -288,19 +282,19 @@ public class LandActivity extends Activity implements OnClickListener {
 	 */
 	private void land(final String mobile, final String verification) {
 		
-		
-		
 		if(code.equals("0")){
 			
 			System.out.println("--------------------------->"+"摁下登录");
 						
 			Map<String, String> map = new HashMap<String, String>();
-			map.put("passenger[name]", "simsunny");
+//			map.put("passenger[name]", "simsunny");//测试数据，具体用户名如何修改还不知道，无需求
 			map.put("passenger[mobile]", mobile);
 			map.put("passenger[password]", verification);
 			map.put("passenger[androidDevice]", Tools.getDeviceId(this));
-			
-			String result = HttpTools.PostDate(Constant.SIGNUP, map);
+			map.put("passenger[lat]", String.valueOf(lat));
+			map.put("passenger[lng]", String.valueOf(lng));
+//			Log.e("定位", lat+"-"+lng+"-"+Tools.getDeviceId(this));
+			String result = HttpTools.PostDate(Constant.SIGNIN, map);//原逻辑是通过手机号获取验证码，用验证码调用注册接口，现在逻辑是用手机号获取验证码，此时服务器就去注册，返回的验证码就是密码，用密码掉登陆接口
 			
 			
 			if(result!=null){
@@ -339,7 +333,7 @@ public class LandActivity extends Activity implements OnClickListener {
 							startActivity(i);
 							this.finish();
 						}else{
-							Toast.makeText(context, "登录失败，请核对手机号和验证码", 1000);
+							Toast.makeText(context, "登录失败，请核对手机号和验证码", 1000).show();
 						}
 						
 					}
@@ -383,4 +377,35 @@ public class LandActivity extends Activity implements OnClickListener {
 			}
 		}).start();
 	}
+
+
+	private void startLocation(){
+		mLocClient = new LocationClient(this);
+
+		LocationClientOption option = new LocationClientOption();
+		option.setOpenGps(true);// 打开gps
+		option.setCoorType("bd09ll"); // 设置坐标类型
+		mLocClient.setLocOption(option);
+		mLocClient.registerLocationListener(this);// 要实现BDLocationListener的接口
+		mLocClient.start();
+	}
+	
+	@Override
+	public void onReceiveLocation(BDLocation location) {
+		if (HttpTools.checkNetWork(this)) {
+
+			lat = location.getLatitude();
+			lng = location.getLongitude();
+			Log.e("定位", lat+"-"+lng);
+		}
+		
+	}
+
+
+	@Override
+	public void onReceivePoi(BDLocation arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

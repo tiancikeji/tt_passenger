@@ -189,7 +189,8 @@ public class HttpTools {
 			HttpEntity httpEntity = new UrlEncodedFormEntity(list, HTTP.UTF_8);//
 			// 使用编码构建Post实体
 			HttpPost post = new HttpPost(url);
-			System.out.println("url--------------------------->" + url.toString());
+//			System.out.println("url--------------------------->" + url.toString());
+			Log.e("url--------------------------->", url.toString());
 			post.setEntity(httpEntity);// 设置Post实体
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse response = client.execute(post);// 执行Post方法

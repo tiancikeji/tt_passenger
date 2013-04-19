@@ -98,7 +98,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 	List<GeoPoint> pList;// 存放经纬度的列表
 	public static View mPopView = null; // 点击mark时弹出的气泡View
 	private String mStrKey = "8BB7F0E5C9C77BD6B9B655DB928B74B6E2D838FD";
-	LocationListener mLocationListener = null;
+//	LocationListener mLocationListener = null;
 	int iZoom = 0;
 
 	/**
@@ -233,8 +233,22 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		setContentView(R.layout.mapview);
 		Tools.init();
 		iniView();
-		MyJpushTools.setAlias(context, "myalias" + name);
+		
+		// 设置设备别名，以用户名为别名，（最终要实现当用户换账号时，别名改变）
+		MyJpushTools.setAlias(context, "passenger_" + psID);
+		Log.e("推送别名","passenger_" + psID);
+	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		initMyBroadcastReceiver();// 动态注册广播
+	}
+
+	@Override
+	protected void onStop() {
+		unregisterReceiver(myreceiver);// 当主activity关闭，广播关闭
+		super.onStop();
 	}
 
 	public class MyMKSearchListener implements MKSearchListener {
@@ -337,7 +351,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		isWaiting = false;
 
 		if (!HttpTools.isNetworkAvailable(context)) {
-			Toast.makeText(context, "请您连接网络", 1000);
+			Toast.makeText(context, "请您连接网络", Toast.LENGTH_SHORT).show();
 		}
 
 		mMapView = (MapView) findViewById(R.id.bmapView);
@@ -705,7 +719,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 						map.put("driver[lat]", String.valueOf(lat));
 						map.put("driver[lng]", String.valueOf(lng));
 						map.put("driver[androidDevice]", androidDevice);
-
+						Log.e("位置", lat+"-"+lng);
 						driversList = (List<DriversInfo>) HttpTools
 								.getAndParse(Constant.DRIVERS, map,
 										new DriversHandler());
@@ -989,6 +1003,12 @@ public class LocationOverlay extends Activity implements OnClickListener,
 									+ jsonObject.getString("message"));
 
 							exitPro(context);
+//							//退出登录后要清楚缓存
+//							SharedPreferences share = getSharedPreferences("data", 0);
+//							Editor editor = share.edit();
+//							editor.clear();
+//							editor.commit();
+							
 							finish();
 
 							return;
@@ -1385,6 +1405,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 			lat = location.getLatitude();
 			lng = location.getLongitude();
+			
 			System.out.println("onReceiveLocation的lat---------------->" + lat);
 			System.out.println("onReceiveLocation的lng---------------->" + lng);
 			pt = new GeoPoint((int) (lat * 1e6), (int) (lng * 1e6));
@@ -1663,47 +1684,18 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		}
 	}
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		initMyBroadcastReceiver();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-		unregisterReceiver(myreceiver);// 当主activity关闭，广播关闭
-
-	}
 
 	/**
 	 * 推送广播接收器
 	 */
 	private void initMyBroadcastReceiver() {
-		IntentFilter filter = new IntentFilter(
-				"cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY");
-
-		// filter.addAction("cn.jpush.android.intent.REGISTRATION");//
-		// 用户注册SDK的intent
-		// filter.addAction("cn.jpush.android.intent.UNREGISTRATION");
-		// filter.addAction("cn.jpush.android.intent.MESSAGE_RECEIVED");//
-		// 用户接收SDK消息的intent
-		// filter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");//
-		// 用户接收SDK通知栏信息的intent
-		// filter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENED");//
-		// 用户打开自定义通知栏的intent
-		// filter.addCategory("com.findcab");
-
-		// filter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY");
-		// filter.addAction("android.intent.action.USER_PRESENT");
-		// filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-		// filter.addAction("android.intent.action.PACKAGE_ADDED");
-		// filter.addAction("android.intent.action.PACKAGE_REMOVED");
-		// filter.addDataScheme("com.findcab");
-		// filter.addCategory("com.findcab");
-
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("cn.jpush.android.intent.REGISTRATION");// 用户注册SDK的intent
+		filter.addAction("cn.jpush.android.intent.UNREGISTRATION");
+		filter.addAction("cn.jpush.android.intent.MESSAGE_RECEIVED");// 用户接收SDK消息的intent
+		filter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");// 用户接收SDK通知栏信息的intent
+		filter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENED");// 用户打开自定义通知栏的intent
+		filter.addCategory("com.findcab");
 		getApplicationContext().registerReceiver(myreceiver, filter); // 注册
 	}
 
@@ -1734,7 +1726,6 @@ public class LocationOverlay extends Activity implements OnClickListener,
 			} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
 					.getAction())) {
 
-				getConversations();
 				Log.e(TAG,
 						"接收到推送下来的自定义消息: "
 								+ bundle.getString(JPushInterface.EXTRA_MESSAGE));

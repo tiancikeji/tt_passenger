@@ -23,7 +23,7 @@ public class Constant {
 	public static final String CONVERSATIONS = BASEURL + "conversations/";// 更新会话状态
 
 	public static final String SIGNOUT = BASEURL + "passengers/signout/";// 退出
-
+	public static final String UPDATEOWNERINFO = "passengers/update";//更新用户数据
 	public static final String GEOCODE = "http://maps.googleapis.com/maps/api/geocode/xml";
 
 }

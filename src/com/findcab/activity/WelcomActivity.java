@@ -22,7 +22,10 @@ public class WelcomActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.welcome);
+		
+		//初始化极光推送
 		initJPush();
+		
 		// welcom_layout = (RelativeLayout) findViewById(R.id.welcom_layout);
 		AnimationSet animationset = new AnimationSet(true);
 		AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
@@ -64,6 +67,7 @@ public class WelcomActivity extends Activity {
 		return false;
 	}
 
+	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
 	private void initJPush() {
 		JPushInterface.init(getApplicationContext());
 	}
