@@ -21,7 +21,6 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -227,7 +226,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
+		context = getApplicationContext();
 		initManager();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mapview);
@@ -247,7 +246,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 	@Override
 	protected void onStop() {
-		unregisterReceiver(myreceiver);// 当主activity关闭，广播关闭
+//		unregisterReceiver(MyReceiver);// 当主activity关闭，广播关闭
 		super.onStop();
 	}
 
@@ -538,8 +537,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 					// mMapView.refresh();
 
 				} else {
-
-					Toast.makeText(LocationOverlay.this, "无法获得坐标", 1000);
+					Toast.makeText(LocationOverlay.this, "无法定位", Toast.LENGTH_SHORT).show();
 				}
 			}
 
@@ -559,6 +557,12 @@ public class LocationOverlay extends Activity implements OnClickListener,
 			// 并没有取消订单
 			judgeCancle = CANCLE_CALLING;
 			showDialog1();
+			if (lastConversation != null) {
+				String id = String.valueOf(ConversationID);
+				System.out.print("取消的ID----------------------->"
+						+ ConversationID);
+				changeConversationsStatus("-1", id);
+			}
 			break;
 		// answer界面取消
 		case R.id.map_answr_bottom_btn_cancel:
@@ -586,6 +590,12 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		case R.id.dialog_frist_cancel:
 			isGetConversation = false;
 			showNorm();
+			if (lastConversation != null) {
+				String id = String.valueOf(ConversationID);
+				System.out.print("取消的ID----------------------->"
+						+ ConversationID);
+				changeConversationsStatus("-1", id);
+			}
 			break;
 		// dialog倒计时时间到_继续叫车
 		case R.id.dialog_frist_contiune:
@@ -848,33 +858,12 @@ public class LocationOverlay extends Activity implements OnClickListener,
 						Map<String, String> map = new HashMap<String, String>();
 						map.put("from_id", String.valueOf(psID));// passerget的id，
 
-						// listLastConversation = (List<ConversationInfo>)
-						// HttpTools.getAndParse(context,
-						// Constant.CONVERSATIONS, map,new
-						// ConversationsHandler());
+						
 						lastConversation = (ConversationInfo) HttpTools
 								.getAndParse(context, Constant.CONVERSATIONS,
 										map, new ConversationsHandler());
 
-						// lastConversation = (ConversationInfo)
-						// HttpTools.getAndParse(context,
-						// Constant.CONVERSATIONS, map,new
-						// ConversationsHandler());
-
-						// "from_id": 45,乘客的id
-						// "to_id": 30, 司机的id
-						// "trip_id": 541, trip的id
-						// "id":112, 会话的id
-						Thread.currentThread().sleep(1000);
-						// for(int
-						// i=listLastConversation.size()-1;i>=0;i--){
-						// ConversationInfo conversation =
-						// listLastConversation.get(listLastConversation.size()-1);
-						// System.out.println("外面--------------------->"+conversation.getId());
-						// System.out.println("外面--------------------->"+conversation.getStatus());
-						// lastConversation=conversation;
-
-						// }
+						
 						if (lastConversation != null) {
 
 							int to_id = lastConversation.getTo_id();
@@ -883,11 +872,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 									+ lastConversation.getId());
 							System.out.println("最最最里面面--------------------->"
 									+ lastConversation.getStatus());
-							// ConversationID=lastConversation.getId();
-							// System.out.println("ConversationID=------------------------"+lastConversation.getId());
-
-							// System.out.println("------lastConversation----Status------"+
-							// Status);
+					
 
 							if (Status == 1) {// 司机应答
 
@@ -916,12 +901,12 @@ public class LocationOverlay extends Activity implements OnClickListener,
 						}
 
 						// 标示一秒接收一个会话消息
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+//						try {
+//							Thread.sleep(1000);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
@@ -1002,13 +987,13 @@ public class LocationOverlay extends Activity implements OnClickListener,
 							System.out.println("message--->"
 									+ jsonObject.getString("message"));
 
-							exitPro(context);
-//							//退出登录后要清楚缓存
-//							SharedPreferences share = getSharedPreferences("data", 0);
-//							Editor editor = share.edit();
-//							editor.clear();
-//							editor.commit();
+							//退出登录后要清楚缓存
+							SharedPreferences share = getSharedPreferences("data", 0);
+							Editor editor = share.edit();
+							editor.clear();
+							editor.commit();
 							
+							exitPro(context);
 							finish();
 
 							return;
@@ -1289,7 +1274,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 					showCalled(acceptInfo);
 					isListern = true;
-					listernConversation();
+//					listernConversation();
 
 				} else {
 					isGetConversation = true;// 继续向服务器发送消息
@@ -1696,65 +1681,29 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		filter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");// 用户接收SDK通知栏信息的intent
 		filter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENED");// 用户打开自定义通知栏的intent
 		filter.addCategory("com.findcab");
-		getApplicationContext().registerReceiver(myreceiver, filter); // 注册
+		getApplicationContext().registerReceiver(MyReceiver, filter); // 注册
 	}
 
 	/**
 	 * 自定义广播,动态注册
 	 */
-	private BroadcastReceiver myreceiver = new BroadcastReceiver() {
+	private BroadcastReceiver MyReceiver = new BroadcastReceiver() {
 		private static final String TAG = "MyReceiver";
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Bundle bundle = intent.getExtras();
-			Log.e(TAG, "onReceive - " + intent.getAction() + ", extras: "
-					+ printBundle(bundle));
-
-			if (JPushInterface.ACTION_REGISTRATION_ID
-					.equals(intent.getAction())) {
-				String regId = bundle
-						.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-				Log.e(TAG, "接收Registration Id : " + regId);
-				// send the Registration Id to your server...
-			} else if (JPushInterface.ACTION_UNREGISTER.equals(intent
-					.getAction())) {
-				String regId = bundle
-						.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-				Log.e(TAG, "接收UnRegistration Id : " + regId);
-				// send the UnRegistration Id to your server...
-			} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
-					.getAction())) {
-
-				Log.e(TAG,
+			
+			if (bundle.containsKey("cn.jpush.android.ALERT")) {
+				Log.e(
+						TAG,
 						"接收到推送下来的自定义消息: "
-								+ bundle.getString(JPushInterface.EXTRA_MESSAGE));
+						+ bundle.getString("cn.jpush.android.ALERT"));
 
 				// 判断收到消息内容
 				refreshViewByJPushInfo(bundle
-						.getString(JPushInterface.EXTRA_MESSAGE));
-
-			} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED
-					.equals(intent.getAction())) {
-				Log.e(TAG, "接收到推送下来的通知");
-				int notifactionId = bundle
-						.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-				Log.e(TAG, "接收到推送下来的通知的ID: " + notifactionId);
-
-			} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent
-					.getAction())) {
-				Log.e(TAG, "用户点击打开了通知");
-
-				// //打开自定义的Activity
-				// Intent i = new Intent(context, WelcomActivity.class);
-				// i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				// context.startActivity(i);
-				Log.e("收到广播", "");
-
-			} else {
-				Log.e(TAG, "Unhandled intent - " + intent.getAction());
+						.getString("cn.jpush.android.ALERT"));
 			}
-
 		}
 
 		// 打印所有的 intent extra 数据

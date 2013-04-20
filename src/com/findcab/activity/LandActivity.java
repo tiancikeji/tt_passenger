@@ -293,7 +293,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 			map.put("passenger[androidDevice]", Tools.getDeviceId(this));
 			map.put("passenger[lat]", String.valueOf(lat));
 			map.put("passenger[lng]", String.valueOf(lng));
-//			Log.e("定位", lat+"-"+lng+"-"+Tools.getDeviceId(this));
+			Log.e("定位2", lat+"-"+lng+"-"+Tools.getDeviceId(this));
 			String result = HttpTools.PostDate(Constant.SIGNIN, map);//原逻辑是通过手机号获取验证码，用验证码调用注册接口，现在逻辑是用手机号获取验证码，此时服务器就去注册，返回的验证码就是密码，用密码掉登陆接口
 			
 			
@@ -396,7 +396,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 
 			lat = location.getLatitude();
 			lng = location.getLongitude();
-			Log.e("定位", lat+"-"+lng);
+			Log.e("定位1", lat+"-"+lng);
 		}
 		
 	}

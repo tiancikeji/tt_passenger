@@ -12,7 +12,8 @@ public class Constant {
 	public static final int FAILURE = 222;
 	public static final int ERROR = 333;
 
-	public static final String BASEURL = "http://vissul.com:8989/api/";
+//	public static final String BASEURL = "http://vissul.com:8989/api/";
+	public static final String BASEURL = "http://42.96.164.29:80/api/";
 	public static final String DRIVERS = BASEURL + "drivers/";
 	public static final String SIGNUP = BASEURL + "passengers/signup/";// 注册
 	public static final String SIGNIN = BASEURL + "passengers/signin/";// 乘客登陆
