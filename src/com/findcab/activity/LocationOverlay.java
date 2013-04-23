@@ -66,7 +66,6 @@ import com.baidu.mapapi.search.MKWalkingRouteResult;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.findcab.R;
 import com.findcab.handler.BaseHandler;
-import com.findcab.handler.ConversationHandler;
 import com.findcab.handler.ConversationsHandler;
 import com.findcab.handler.DriversHandler;
 import com.findcab.handler.TripsHandler;
@@ -165,7 +164,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 	private boolean isAccept = true;
 
 	private List<DriversInfo> driversList; // 司机列表
-	ConversationInfo lastConversation = null;// 最后的会话
+	ConversationInfo lastConversation = null;// 最新一条会话
 	private Drivers acceptInfo;
 	private Passengers info;
 	private List<ConversationInfo> listLastConversation = new ArrayList<ConversationInfo>();
@@ -589,13 +588,13 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		// dialog倒计时时间到_确定取消叫车
 		case R.id.dialog_frist_cancel:
 			isGetConversation = false;
-			showNorm();
+			
 			if (lastConversation != null) {
 				String id = String.valueOf(ConversationID);
-				System.out.print("取消的ID----------------------->"
-						+ ConversationID);
+				System.out.print("取消的ID----------------------->"+ ConversationID);
 				changeConversationsStatus("-1", id);
 			}
+			showNorm();
 			break;
 		// dialog倒计时时间到_继续叫车
 		case R.id.dialog_frist_contiune:
@@ -946,15 +945,22 @@ public class LocationOverlay extends Activity implements OnClickListener,
 						map.put("conversation[status]", status);
 						map.put("conversation[status_desc]", status_desc);
 
-						String result = (String) HttpTools.postAndParse(
-								Constant.CONVERSATIONS + id + "/", map,
-								new BaseHandler());
+//						String result = (String) HttpTools.postAndParse(
+//								Constant.CONVERSATIONS + id + "/", map,
+//								new BaseHandler());
 
-						// if (result != null) {
-						//
-						// normHandler.sendEmptyMessage(Constant.SUCCESS);
-						// }
+//						// if (result != null) {
+//						//
+//						// normHandler.sendEmptyMessage(Constant.SUCCESS);
+//						// }
+						
+						//会话状态更新后，刷新会话
 
+//						ConversationInfo conversation = (ConversationInfo)HttpTools.postAndParse(Constant.CONVERSATIONS + id + "/", map,new BaseHandler());				
+//						if(conversation != null){
+//							lastConversation.setStatus(status);
+//						}
+						
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
@@ -1447,7 +1453,6 @@ public class LocationOverlay extends Activity implements OnClickListener,
 				public void run() {
 					while (isWaiting) {
 
-						// TODO Auto-generated method stub
 						try {
 							Thread.currentThread().sleep(1000);
 							Message msg = new Message();
@@ -1468,38 +1473,38 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 	}
 
-	private void listernConversation() {
-		if (HttpTools.checkNetWork(context)) {
-			new Thread(new Runnable() {
-				public void run() {
-					while (isListern) {
-
-						lastConversation = (ConversationInfo) HttpTools
-								.getAndParse(Constant.CONVERSATIONS,
-										ConversationID,
-										new ConversationHandler());
-						try {
-							Thread.currentThread().sleep(1000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						if (lastConversation != null) {
-
-							int Status = lastConversation.getStatus();
-
-							if (Status == 4) {// 司机应答
-								normHandler.sendEmptyMessage(Constant.SUCCESS);
-
-							} else {
-
-							}
-						}
-					}
-				}
-			}).start();
-		}
-	}
+//	private void listernConversation() {
+//		if (HttpTools.checkNetWork(context)) {
+//			new Thread(new Runnable() {
+//				public void run() {
+//					while (isListern) {
+//
+//						lastConversation = (ConversationInfo) HttpTools
+//								.getAndParse(Constant.CONVERSATIONS,
+//										ConversationID,
+//										new ConversationHandler());
+//						try {
+//							Thread.currentThread().sleep(1000);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						if (lastConversation != null) {
+//
+//							int Status = lastConversation.getStatus();
+//
+//							if (Status == 4) {// 司机应答
+//								normHandler.sendEmptyMessage(Constant.SUCCESS);
+//
+//							} else {
+//
+//							}
+//						}
+//					}
+//				}
+//			}).start();
+//		}
+//	}
 
 	private void displapDriversForAnswer(Drivers info) {
 

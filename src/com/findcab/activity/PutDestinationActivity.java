@@ -309,7 +309,7 @@ public class PutDestinationActivity extends Activity  {
 					
 				}
 				else{
-					Toast.makeText(PutDestinationActivity.this, "有異常", 1000);
+					Toast.makeText(PutDestinationActivity.this, "有異常", 1000).show();
 				}
 
 			}
@@ -416,7 +416,7 @@ public class PutDestinationActivity extends Activity  {
 						
 					}
 					else{
-						Toast.makeText(PutDestinationActivity.this, "有異常", 1000);
+						Toast.makeText(PutDestinationActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
 					}
 				}
 

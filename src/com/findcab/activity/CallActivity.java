@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.findcab.R;
 import com.findcab.util.Tools;
@@ -34,6 +35,7 @@ public class CallActivity extends Activity implements OnClickListener {
 	// private Button start_cancel, end_cancel;
 	private Button okButton, cancelButton;
 	private EditText edit_start, edit_end;
+	private LinearLayout linearlayout_premium;
 	private Button btn0,btn5,btn10,btn15,btn20;
 
 	
@@ -104,6 +106,9 @@ public class CallActivity extends Activity implements OnClickListener {
 		cancelButton = (Button) findViewById(R.id.cancel);
 		cancelButton.setOnClickListener(this);
 		
+		//加价控件
+		linearlayout_premium = (LinearLayout)findViewById(R.id.calling_premium);
+		
 		btn0=(Button)findViewById(R.id.calling_premium_btn0);
 		btn0.setOnClickListener(this);
 		btn0.setBackgroundResource(R.drawable.calling_premium_p);
@@ -120,7 +125,8 @@ public class CallActivity extends Activity implements OnClickListener {
 		
 		btn20=(Button)findViewById(R.id.calling_premium_btn20);
 		btn20.setOnClickListener(this);
-		
+		//加价功能先取消
+		linearlayout_premium.setVisibility(View.GONE);
 
 	}
 
