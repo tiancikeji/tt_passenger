@@ -1,5 +1,6 @@
 package com.findcab.activity;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONException;
@@ -8,16 +9,24 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -45,10 +54,10 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 	public int pssengersID;
 	private String error;
 	private String code="1";
+	private String code_getTime = null;
 	private  int timer =60;
-	private boolean is=false;
+//	private boolean is=false;
 	private Passengers psInfo;
-	
 	
 	private Button butt_land = null;
 	private Button butt_verification = null;
@@ -60,8 +69,6 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 	private static String verificationCode = null;
 	private boolean countRunning ;
 	
-
-
 	public static final int SUCCESS = 1;
 	public static final int PHONENULL = 2;
 	public static final int PASSWORDNULL = 3;
@@ -92,7 +99,6 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 		startLocation();
 	}
 
-
 	@Override
 	protected void onDestroy() {
 		mLocClient.stop();
@@ -102,18 +108,31 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		
 		//提交验证码（登录）
 		case R.id.ph_verficition_btn_sub_veri:
-
 			phNum = phEditText.getText().toString().trim();
 			verificationCode = edit_verification.getText().toString().trim();
 			land(phNum, verificationCode);
 			break;
 		//获取验证码
 		case R.id.ph_verficition_btn_get_veri:
+			if(!countRunning){
+				butt_verification.setEnabled(true);
+//				phNum = phEditText.getText().toString().trim();
+//				timer=60;
+//				if (!phNum.equals("")&&phNum.length()==11) {
+//					countRunning=true;
+//					btnChanged();
+//					getVerification();
+//				} else {
+//					Tools.myToast(context, "请正确输入手机号码！");
+//				}
+			}else{
+				butt_verification.setEnabled(false);
+			}
+			
 			phNum = phEditText.getText().toString().trim();
 			timer=60;
 			if (!phNum.equals("")&&phNum.length()==11) {
@@ -121,7 +140,8 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 				btnChanged();
 				getVerification();
 			} else {
-				Tools.myToast(context, "请输入手机号码！");
+				Tools.myToast(context, "请正确输入手机号码！");
+//				initMyToast1("请正确输入手机号码！");
 			}
 			break;
 			
@@ -208,8 +228,10 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 		
 		//输入电话号码的editview
 		phEditText = (EditText) findViewById(R.id.ph_verificition_edit_ph);
+		
 		//输入验证码的editview
 		edit_verification = (EditText) findViewById(R.id.ph_verificition_edit_veri);
+		
 		//用来登录
 		butt_land = (Button) findViewById(R.id.ph_verficition_btn_sub_veri);
 		butt_land.setOnClickListener(this);
@@ -264,9 +286,13 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 				System.out.println("the verification is--------------------->"+result);
 				
 				try {
-					
 					JSONObject json = new JSONObject(result);
 					code = json.getString("code");
+					if(code.equals("0")){
+						clearGetCodeTime();
+						saveGetCodeTime(getNowTime());
+					}
+					
 					System.out.println("code------------------------->"+code);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -282,8 +308,13 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 	 */
 	private void land(final String mobile, final String verification) {
 		
-		if(code.equals("0")){
-			
+//		if(code.equals("0")){
+		//读取获得验证码时间
+		double a = Double.parseDouble(getCodeTime());
+		double b = Double.parseDouble(getNowTime());
+		//判断验证码发送时间未超过30分钟
+		
+		if(getCodeTime() != null && a!= 0 && b-a < 1800 && b-a >0){
 			System.out.println("--------------------------->"+"摁下登录");
 						
 			Map<String, String> map = new HashMap<String, String>();
@@ -296,7 +327,6 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 			Log.e("定位2", lat+"-"+lng+"-"+Tools.getDeviceId(this));
 			String result = HttpTools.PostDate(Constant.SIGNIN, map);//原逻辑是通过手机号获取验证码，用验证码调用注册接口，现在逻辑是用手机号获取验证码，此时服务器就去注册，返回的验证码就是密码，用密码掉登陆接口
 			
-			
 			if(result!=null){
 				try {
 					System.out.println("乘客注册的返回 -------------------->"+result);
@@ -304,18 +334,8 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 					JSONObject jsonObject = new JSONObject(result);
 					JSONObject passenger = jsonObject.optJSONObject("passenger");
 					
-					psInfo= new Passengers(passenger);
-					
 					if(passenger!=null){
-						
-//							String androidDevice = passenger.optString("androidDevice");
-//							String creat_at = passenger.optString("created_at");
-//							String lat = passenger.optString("lat");
-//							String lag = passenger.optString("lag");
-//							String mobile = a.optString("mobile");
-//						    pssengersID = passenger.optInt("id");
-//							psInfo= new Passengers(passenger );
-						
+						psInfo= new Passengers(passenger);
 						
 						String psMobile = passenger.optString("mobile");
 						String psPssword = passenger.optString("password");
@@ -333,9 +353,12 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 							startActivity(i);
 							this.finish();
 						}else{
-							Toast.makeText(context, "登录失败，请核对手机号和验证码", 1000).show();
+							Toast.makeText(context, "登录失败，请核对手机号和验证码", Toast.LENGTH_SHORT).show();
 						}
 						
+					}else{
+						//登陆失败
+						Toast.makeText(context, "登录失败", Toast.LENGTH_SHORT).show();
 					}
 				
 				} catch (JSONException e) {
@@ -343,6 +366,9 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 					e.printStackTrace();
 				}
 			}
+		}else{
+//			Toast.makeText(context, "请重新获取验证码", Toast.LENGTH_SHORT).show();
+			initMyToast1("请重新获取验证码");
 		}
 	}
 	
@@ -407,5 +433,67 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * 关闭软键盘
+	 */
+	private void closeInputMethod(EditText et){
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+	}
+	
+	/**
+	 * 打开软键盘
+	 */
+	private void openInputMethod(EditText et){
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		if(imm.isActive()){
+			
+		}
+	}
+	
+	private void saveGetCodeTime(String time){
+		 SharedPreferences sharedata = getSharedPreferences("data", 0);
+		 Editor temp_editor = sharedata.edit();
+		 temp_editor.putString("getcodetime", time);
+		 temp_editor.commit();
+	 }
+	 
+	 private String getCodeTime(){
+		 SharedPreferences sharedata = getSharedPreferences("data", 0);
+		 code_getTime = sharedata.getString("getcodetime", "0");
+		 return code_getTime;
+	 }
+	 
+	 private void clearGetCodeTime(){
+		 SharedPreferences sharedata = getSharedPreferences("data", 0);
+		 Editor temp_editor = sharedata.edit();
+		 temp_editor.putString("getcodetime", null);
+		 temp_editor.commit();
+	 }
+	 
+	 private String getNowTime(){
+		Calendar calendar_now = Calendar.getInstance();
+		calendar_now.set(calendar_now.get(Calendar.YEAR), calendar_now.get(Calendar.MONTH), calendar_now.get(Calendar.DAY_OF_MONTH), calendar_now.get(Calendar.HOUR_OF_DAY), calendar_now.get(Calendar.MINUTE), calendar_now.get(Calendar.SECOND));
+		calendar_now.set(Calendar.MILLISECOND, 0);
+		
+		String time = String.format("%1$04d%2$02d%3$02d%4$02d%5$02d%6$02d",calendar_now.get(Calendar.YEAR),calendar_now.get(Calendar.MONTH)+1,calendar_now.get(Calendar.DAY_OF_MONTH),calendar_now.get(Calendar.HOUR_OF_DAY),calendar_now.get(Calendar.MINUTE),calendar_now.get(Calendar.SECOND));
+		return time;
+	 }
+	 
+	 public void initMyToast1(String text){
+		 Toast temp_toast;
+			LayoutInflater inflater = getLayoutInflater();
+			View layout = inflater.inflate(R.layout.mywidget_toast1,null);
+			LinearLayout.LayoutParams ly = new LinearLayout.LayoutParams(180, 70);
+			layout.setLayoutParams(ly);
+				   TextView title = (TextView) layout.findViewById(R.id.mywidget_toast1_textview);
+				   title.setText(text);
+				   temp_toast = new Toast(context);
+				   temp_toast.setGravity(Gravity.CENTER, 0, 0);
+				   temp_toast.setDuration(Toast.LENGTH_LONG);
+				   temp_toast.setView(layout);
+				   temp_toast.show();
+		}
 
 }

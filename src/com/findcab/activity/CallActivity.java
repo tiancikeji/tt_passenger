@@ -3,6 +3,8 @@
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,7 +55,17 @@ public class CallActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.call);
 		Tools.init();
 		initView();
+		getInputRecord();//获取最近一次输入记录
 	}
+
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		saveInputRecord();
+	}
+
 
 	/**
 	 * 初始化view
@@ -251,5 +263,25 @@ public class CallActivity extends Activity implements OnClickListener {
 	 
 	 private int putPremium(int premium){
 		 return premium;
+	 }
+	 
+	 private void saveInputRecord(){
+		 SharedPreferences sharedata = getSharedPreferences("data", 0);
+		 Editor temp_editor = sharedata.edit();
+		 temp_editor.putString("inputrecord_start", start);
+		 temp_editor.putString("inputrecord_end", end);
+		 temp_editor.commit();
+	 }
+	 
+	 private void getInputRecord(){
+		 SharedPreferences sharedata = getSharedPreferences("data", 0);
+		 String temp_start = sharedata.getString("inputrecord_start", null);
+		 String temp_end = sharedata.getString("inputrecord_end", null);
+		 if(temp_start != null && !temp_start.equals("")){
+			 edit_start.setHint(temp_start);
+		 }
+		 if(temp_end != null && !temp_end.equals("")){
+			 edit_end.setHint(temp_end);
+		 }
 	 }
 }

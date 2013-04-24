@@ -26,6 +26,7 @@ import com.iflytek.ui.RecognizerDialogListener;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -37,9 +38,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -120,7 +123,33 @@ public class PutDestinationActivity extends Activity  {
 		helper = new DBHelper(PutDestinationActivity.this);
 		
 		listView = (ListView) findViewById(R.id.put_destination_list);
+		listView.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()){
+				case MotionEvent.ACTION_DOWN:
+					//当滚动listview关闭键盘
+					closeInputMethod();
+					break;
+				}
+				return false;
+			}
+		});
 		DBListView=(ListView)findViewById(R.id.put_destination_dblist);
+		DBListView.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()){
+				case MotionEvent.ACTION_DOWN:
+					//当滚动listview关闭键盘
+					closeInputMethod();
+					break;
+				}
+				return false;
+			}
+		});
 		
 		//先从数据库里面读数据
 		initListFromDB();
@@ -328,10 +357,10 @@ public class PutDestinationActivity extends Activity  {
 			dbListMap.clear();
 		}
 		
-		Map<String,String> defaultMap= new HashMap<String,String>();
-		defaultMap.put("poiName", "我的位置");
-		defaultMap.put("poiAddress", "");
-		dbListMap.add(defaultMap);
+//		Map<String,String> defaultMap= new HashMap<String,String>();
+//		defaultMap.put("poiName", "我的位置");
+//		defaultMap.put("poiAddress", "");
+//		dbListMap.add(defaultMap);
 		
 		int count=0;
 		Cursor cursor;
@@ -359,7 +388,7 @@ public class PutDestinationActivity extends Activity  {
 				}
 			}
 		}
-		
+		cursor.close();
 		helper.close();
 		
 		SimpleAdapter adapter = new SimpleAdapter(PutDestinationActivity.this, dbListMap, R.layout.put_destination_listview_item, 
@@ -479,8 +508,23 @@ public class PutDestinationActivity extends Activity  {
 		iatDialog.show();
 	}
 	
+	/**
+	 * 关闭软键盘
+	 */
+	private void closeInputMethod(){
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(putDestination.getWindowToken(), 0);
+	}
 	
-	
+	/**
+	 * 打开软键盘
+	 */
+	private void openInputMethod(){
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		if(imm.isActive()){
+			
+		}
+	}
 	
 	
 	

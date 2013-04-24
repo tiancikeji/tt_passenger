@@ -343,6 +343,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 				PhoneStateListener.LISTEN_CALL_STATE);
 
 		System.out.println("启动locationOverlay-------------------------->");
+		
 		// 得到乘客注册的id
 		SharedPreferences sharedata = getSharedPreferences("data", 0);
 		psID = sharedata.getInt("psID", 0);
@@ -552,7 +553,6 @@ public class LocationOverlay extends Activity implements OnClickListener,
 			break;
 		// calling界面取消
 		case R.id.map_waiting_bottom_btn_cancel:
-
 			// 并没有取消订单
 			judgeCancle = CANCLE_CALLING;
 			showDialog1();
@@ -561,22 +561,26 @@ public class LocationOverlay extends Activity implements OnClickListener,
 				System.out.print("取消的ID----------------------->"
 						+ ConversationID);
 				changeConversationsStatus("-1", id);
+			}else{
+				Log.e("等待应答中取消叫车","CANCLE_CALLING");
 			}
 			break;
 		// answer界面取消
 		case R.id.map_answr_bottom_btn_cancel:
 
 			isGetConversation = false;// 不能在向服务器发送会话
-
+			judgeCancle = CANCLE_ANSWER;
 			if (lastConversation != null) {
 				String id = String.valueOf(ConversationID);
 				System.out.print("取消的ID----------------------->"
 						+ ConversationID);
 				changeConversationsStatus("-1", id);
+			}else{
+				Log.e("应答后取消叫车","CANCLE_ANSWER");
 			}
 			// Intent i2 = new Intent();
 			// startActivityForResult(i2, CANCLE_ANSWER);
-			judgeCancle = CANCLE_ANSWER;
+			
 			showDialog1();
 			break;
 		// answer界面拨打电话
@@ -593,7 +597,10 @@ public class LocationOverlay extends Activity implements OnClickListener,
 				String id = String.valueOf(ConversationID);
 				System.out.print("取消的ID----------------------->"+ ConversationID);
 				changeConversationsStatus("-1", id);
+			}else{
+				Log.e("时间到取消叫车","CANCLE_ANSWER");
 			}
+			
 			showNorm();
 			break;
 		// dialog倒计时时间到_继续叫车
@@ -993,11 +1000,11 @@ public class LocationOverlay extends Activity implements OnClickListener,
 							System.out.println("message--->"
 									+ jsonObject.getString("message"));
 
-							//退出登录后要清楚缓存
-							SharedPreferences share = getSharedPreferences("data", 0);
-							Editor editor = share.edit();
-							editor.clear();
-							editor.commit();
+//							//退出登录后要清楚缓存
+//							SharedPreferences share = getSharedPreferences("data", 0);
+//							Editor editor = share.edit();
+//							editor.clear();
+//							editor.commit();
 							
 							exitPro(context);
 							finish();
@@ -1310,8 +1317,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 					if (lastConversation != null) {
 						// String id = String.valueOf(lastConversation.getId());
 						String id = String.valueOf(ConversationID);
-						System.out.print("时间到取消的ID----------------------->"
-								+ ConversationID);
+						Log.e("时间到取消的ID----------------------->","="+ConversationID);
 						changeConversationsStatus("-1", id);
 					}
 					showTimeOutDialog();

@@ -4,15 +4,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
     android:orientation="vertical" 
-    >
+    android:background="@drawable/calling_bg">
     <LinearLayout
         android:layout_width="match_parent" 
         android:layout_height="60dp"
         android:background="@drawable/land_title"
-        android:gravity="center"
-        >
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,6 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
+            android:layout_marginRight="5dp"
             android:layout_weight="5"
             android:hint="@string/input_verification_num"
             android:paddingLeft="5dp"
@@ -66,10 +65,10 @@
             android:background="@drawable/ph_verifi_edit"
             android:numeric="integer"/>
       
-		<TextView 
-		    android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"/>
+		<!-- <TextView  -->
+		<!--    android:layout_width="0dp" --> 
+         <!--    android:layout_height="40dp" --> 
+         <!--    android:layout_marginLeft="5dp"/> --> 
         <Button
             android:id="@+id/ph_verficition_btn_get_veri"
             android:layout_height="40dp"

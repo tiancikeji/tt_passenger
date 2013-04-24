@@ -35,7 +35,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.NetworkInfo.State;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.findcab.handler.Ihandler;
 
@@ -114,7 +116,8 @@ public class HttpTools {
 	 * @return
 	 */
 	public static boolean checkNetWork(final Context context) {
-		if (!isNetworkAvailable(context)) {
+//		if (!isNetworkAvailable(context)) {
+		if(!getConnectNetState(context)){
 
 			new AlertDialog.Builder(context).setIcon(
 					android.R.drawable.ic_dialog_alert).setTitle("网络连接错误")
@@ -150,6 +153,39 @@ public class HttpTools {
 		return true;
 	}
 
+	/**
+	 * 获得当前手机联网状态
+	 * @param connManager
+	 * @param context
+	 * @return
+	 */
+	public static boolean getConnectNetState(Context context ){//ConnectivityManager connManager,
+		ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			try{
+				NetworkInfo activeNetInfo = connManager.getActiveNetworkInfo();//获取网络的连接情况  
+				if (activeNetInfo == null || !activeNetInfo.isAvailable()){     
+					return false;   
+				} else if(activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI){  
+				//判断WIFI网  
+					State state = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();  
+					 if(State.CONNECTED != state){  
+//						 Toast.makeText(context, "WIFI网络没有连接", Toast.LENGTH_SHORT).show();
+						 return false;
+					 } 
+				}else if(activeNetInfo.getType() == ConnectivityManager.TYPE_MOBILE) {  
+				//判断3G网  
+					 State state = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();  
+					 if(State.CONNECTED != state){  
+//						 Toast.makeText(context, "3G网络没有连接", Toast.LENGTH_SHORT).show();
+						 return false;
+					 }  
+				}  
+			}catch(Exception e){
+				e.getStackTrace();
+			}
+			return true;
+		}
+	
 	/*
 	 * GEt请求
 	 */
