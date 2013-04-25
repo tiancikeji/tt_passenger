@@ -32,7 +32,7 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	private int judge;
 
 	public MyItemizedOverlay(Context context, Drawable maker,
-			List<OverlayItem> geoList) {
+			List<OverlayItem> geoList,boolean pop_status) {//pop_status用来判断是否显示乘客信息
 		super(maker);
 		this.mContext = context;
 		this.mGeoList = geoList;
@@ -44,8 +44,17 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 						Log.d("hjtest  ", "clickpop");
 					}
 				});
-		
 		populate();
+		
+//		if(pop_status && LocationOverlay.address != null){// 得到需要标在地图上的资源
+//			BitmapDrawable bd = (BitmapDrawable) maker;
+//			Bitmap popbitmap = bd.getBitmap();
+//			Bitmap bitmap = MyBitmap.createBitmap(popbitmap,
+//					LocationOverlay.address);
+//			pop.showPopup(bitmap, mGeoList.get(0).getPoint(),100);
+//		}
+//		populate();
+		
 	}
 	
 	public MyItemizedOverlay(Context context, Drawable maker,
@@ -138,7 +147,7 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 //			Toast.makeText(this.mContext, mGeoList.get(index).getTitle(),
 //					Toast.LENGTH_SHORT).show();
 
-			pop.showPopup(bitmap, mGeoList.get(index).getPoint(),100);
+			pop.showPopup(bitmap, mGeoList.get(index).getPoint(),200);
 
 		}
 		
@@ -157,7 +166,7 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				Bitmap bitmap = MyBitmap.createBitmap(popbitmap,
 						driverInfo.getName()+","+driverInfo.getCar_license()+"/n"+
 				driverInfo.getCar_type());
-				pop.showPopup(bitmap, mGeoList.get(index).getPoint(),50);
+				pop.showPopup(bitmap, mGeoList.get(index).getPoint(),200);
 			}else{
 				
 			}

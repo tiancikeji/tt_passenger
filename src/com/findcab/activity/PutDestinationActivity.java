@@ -17,6 +17,7 @@ import com.baidu.mapapi.search.MKSuggestionResult;
 import com.baidu.mapapi.search.MKTransitRouteResult;
 import com.baidu.mapapi.search.MKWalkingRouteResult;
 import com.findcab.R;
+import com.findcab.mywidget.MyToast;
 import com.findcab.util.DBHelper;
 import com.iflytek.speech.RecognizerResult;
 import com.iflytek.speech.SpeechError;
@@ -50,7 +51,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 public class PutDestinationActivity extends Activity  {
 	
@@ -224,7 +224,9 @@ public class PutDestinationActivity extends Activity  {
 
 				// 错误号可参考MKEvent中的定义
 				if (error != 0 || res == null) {
-					Toast.makeText(PutDestinationActivity.this,"抱歉，未找到结果", 1000);
+//					Toast.makeText(PutDestinationActivity.this,"抱歉，未找到结果", 1000);
+					MyToast toast = new MyToast(PutDestinationActivity.this,"抱歉，未找到结果");
+					toast.startMyToast();
 					return;
 				}
 				
@@ -338,7 +340,9 @@ public class PutDestinationActivity extends Activity  {
 					
 				}
 				else{
-					Toast.makeText(PutDestinationActivity.this, "有異常", 1000).show();
+//					Toast.makeText(PutDestinationActivity.this, "有異常", 1000).show();
+					MyToast toast = new MyToast(PutDestinationActivity.this,"有异常");
+					toast.startMyToast();
 				}
 
 			}
@@ -419,7 +423,9 @@ public class PutDestinationActivity extends Activity  {
 						
 					}
 					else{
-						Toast.makeText(PutDestinationActivity.this, "有異常", 1000);
+//						Toast.makeText(PutDestinationActivity.this, "有異常", 1000);
+						MyToast toast = new MyToast(PutDestinationActivity.this,"有异常");
+						toast.startMyToast();
 					}
 				}
 				else{
@@ -445,7 +451,9 @@ public class PutDestinationActivity extends Activity  {
 						
 					}
 					else{
-						Toast.makeText(PutDestinationActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
+//						Toast.makeText(PutDestinationActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
+						MyToast toast = new MyToast(PutDestinationActivity.this,"请求失败");
+						toast.startMyToast();
 					}
 				}
 

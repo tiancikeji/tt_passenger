@@ -27,7 +27,7 @@
 	        <RelativeLayout
 	            android:id="@+id/map_calling_title"
 	            android:layout_width="fill_parent"
-	            android:layout_height="60dp"
+	            android:layout_height="53dp"
 	            android:background="@drawable/map_callingtitle_search_bar"
 	           
 	             >
@@ -43,7 +43,7 @@
 	         
 				<ImageView 
 				    android:layout_width="1px"
-				    android:layout_height="match_parent"
+				    android:layout_height="fill_parent"
 				    android:src="@drawable/map_callingtitle_liner"
 				    android:layout_toRightOf="@+id/map_calling_title_btn_fresh"
 				    android:layout_marginLeft="15dp"
@@ -55,6 +55,7 @@
 	                android:layout_height="fill_parent"
 	                android:layout_centerInParent="true"
 	                android:gravity="center_vertical"
+	                android:textSize="13dp"
 	                android:textColor="@color/black" />
 	            <!-- android:id="@+id/title" -->
 				

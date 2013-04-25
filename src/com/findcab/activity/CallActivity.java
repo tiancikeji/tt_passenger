@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.findcab.R;
+import com.findcab.mywidget.MyToast;
 import com.findcab.util.Tools;
 import com.iflytek.mscdemo.IatActivity;
 
@@ -168,7 +169,9 @@ public class CallActivity extends Activity implements OnClickListener {
 				setResult(1, putIntent);
 				finish();
 			} else {
-				Tools.myToast(context, "请输入目的地");
+//				Tools.myToast(context, "请输入目的地");
+				MyToast toast = new MyToast(context,"请输入目的地");
+				toast.startMyToast();
 			}
 
 			break;
@@ -278,10 +281,10 @@ public class CallActivity extends Activity implements OnClickListener {
 		 String temp_start = sharedata.getString("inputrecord_start", null);
 		 String temp_end = sharedata.getString("inputrecord_end", null);
 		 if(temp_start != null && !temp_start.equals("")){
-			 edit_start.setHint(temp_start);
+			 edit_start.setText(temp_start);
 		 }
 		 if(temp_end != null && !temp_end.equals("")){
-			 edit_end.setHint(temp_end);
+			 edit_end.setText(temp_end);
 		 }
 	 }
 }

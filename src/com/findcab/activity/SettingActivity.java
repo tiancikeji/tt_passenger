@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingActivity extends Activity implements OnClickListener{
 	private Button back;
@@ -65,20 +64,20 @@ public class SettingActivity extends Activity implements OnClickListener{
 			this.finish();
 			break;
 		case R.id.setting_phone:
-			Toast.makeText(SettingActivity.this, "o", 1000);
+//			Toast.makeText(SettingActivity.this, "o", 1000);
 			this.finish();
 			break;
 		case R.id.setting_myorder:
-			Toast.makeText(SettingActivity.this, "o", 1000);
+//			Toast.makeText(SettingActivity.this, "o", 1000);
 			break;
 		case R.id.setting_connect_service:
-			Toast.makeText(SettingActivity.this, "o", 1000);
+//			Toast.makeText(SettingActivity.this, "o", 1000);
 			break;
 		case R.id.setting_update:
-			Toast.makeText(SettingActivity.this, "o", 1000);
+//			Toast.makeText(SettingActivity.this, "o", 1000);
 			break;
 		case R.id.setting_connect_us:
-			Toast.makeText(SettingActivity.this, "o", 1000);
+//			Toast.makeText(SettingActivity.this, "o", 1000);
 			break;
 		}
 		

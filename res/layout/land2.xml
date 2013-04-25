@@ -35,8 +35,8 @@
             android:layout_height="40dp"
             android:hint="@string/input_phone_mun"
             android:textColor="@color/black"
-            android:textSize="15dp"
-            android:paddingLeft="5dp"
+            android:textSize="13dp"
+            android:paddingLeft="10dp"
             android:background="@drawable/ph_verifi_edit"
             android:phoneNumber="true"
             />
@@ -59,10 +59,10 @@
             android:layout_marginRight="5dp"
             android:layout_weight="5"
             android:hint="@string/input_verification_num"
-            android:paddingLeft="5dp"
+            android:paddingLeft="10dp"
             android:textColor="@color/black"
-            android:textSize="15dp"
-            android:background="@drawable/ph_verifi_edit"
+            android:textSize="13dp"
+            android:background="@drawable/ph_verifi_edit_ver"
             android:numeric="integer"/>
       
 		<!-- <TextView  -->

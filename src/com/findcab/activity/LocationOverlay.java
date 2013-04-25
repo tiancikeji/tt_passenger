@@ -19,9 +19,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,7 +37,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 
 import com.baidu.location.BDLocation;
@@ -69,6 +65,7 @@ import com.findcab.handler.BaseHandler;
 import com.findcab.handler.ConversationsHandler;
 import com.findcab.handler.DriversHandler;
 import com.findcab.handler.TripsHandler;
+import com.findcab.mywidget.MyToast;
 import com.findcab.object.ConversationInfo;
 import com.findcab.object.Drivers;
 import com.findcab.object.DriversInfo;
@@ -207,14 +204,17 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MESSAGE_CONVERSATIONS_CHANGE:
-				Toast.makeText(context, "会话更新", Toast.LENGTH_SHORT).show();
+				MyToast toast1 = new MyToast(context,"会话更新");
+				toast1.startMyToast();
 				getConversations();
 				break;
 			case MESSAGE_DRIVERS_CHANGE:
-				Toast.makeText(context, "附近司机更新", Toast.LENGTH_SHORT).show();
+				MyToast toast2 = new MyToast(context,"附近司机更新");
+				toast2.startMyToast();
 				break;
 			case MESSAGE_PASSAGERS_CHANGE:
-				Toast.makeText(context, "附近乘客更新", Toast.LENGTH_SHORT).show();
+				MyToast toast = new MyToast(context,"附近乘客更新");
+				toast.startMyToast();
 				break;
 
 			}
@@ -350,7 +350,9 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		isWaiting = false;
 
 		if (!HttpTools.isNetworkAvailable(context)) {
-			Toast.makeText(context, "请您连接网络", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(context, "请您连接网络", Toast.LENGTH_SHORT).show();
+			MyToast toast = new MyToast(context,"请您连接网络");
+			toast.startMyToast();
 		}
 
 		mMapView = (MapView) findViewById(R.id.bmapView);
@@ -447,7 +449,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		mapController = mMapView.getController();
 
 		// 设置地图的缩放级别。 这个值的取值范围是[3,18]。
-		mapController.setZoom(14);
+		mapController.setZoom(15);
 
 		mLocClient = new LocationClient(this);
 
@@ -537,7 +539,9 @@ public class LocationOverlay extends Activity implements OnClickListener,
 					// mMapView.refresh();
 
 				} else {
-					Toast.makeText(LocationOverlay.this, "无法定位", Toast.LENGTH_SHORT).show();
+//					Toast.makeText(LocationOverlay.this, "无法定位", Toast.LENGTH_SHORT).show();
+					MyToast toast = new MyToast(context,"无法定位");
+					toast.startMyToast();
 				}
 			}
 
@@ -681,8 +685,9 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 				if (start == null || start.equals("")) {
 
-					Toast.makeText(context, "无法获取当前位置，请手动输入", Toast.LENGTH_LONG)
-							.show();
+//					Toast.makeText(context, "无法获取当前位置，请手动输入", Toast.LENGTH_LONG).show();
+					MyToast toast = new MyToast(context,"无法获取当前位置，请手动输入");
+					toast.startMyToast();
 				} else {
 					// 发布路线
 					// getDrivers();
@@ -1101,75 +1106,80 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 	}
 
-	/**
-	 * 初始化gps
-	 * 
-	 * @return
-	 */
-	private boolean initGPS() {
-		LocationManager locationManager = (LocationManager) this
-				.getSystemService(Context.LOCATION_SERVICE);
+//	/**
+//	 * 初始化gps
+//	 * 
+//	 * @return
+//	 */
+//	private boolean initGPS() {
+//		LocationManager locationManager = (LocationManager) this
+//				.getSystemService(Context.LOCATION_SERVICE);
+//
+//		// 判断GPS模块是否开启，如果没有则开启
+//		if (!locationManager
+//				.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+//			Toast.makeText(this, "GPS is not open,Please open it!",
+//					Toast.LENGTH_SHORT).show();
+//			// Intent intent = new
+//			// Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//			// startActivityForResult(intent, 0);
+//
+//			return false;
+//		} else {
+//			Toast.makeText(this, "GPS is ready", Toast.LENGTH_SHORT);
+//		}
+//		return true;
+//	}
 
-		// 判断GPS模块是否开启，如果没有则开启
-		if (!locationManager
-				.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
-			Toast.makeText(this, "GPS is not open,Please open it!",
-					Toast.LENGTH_SHORT).show();
-			// Intent intent = new
-			// Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-			// startActivityForResult(intent, 0);
-
-			return false;
-		} else {
-			Toast.makeText(this, "GPS is ready", Toast.LENGTH_SHORT);
-		}
-		return true;
-	}
-
-	/**
-	 * 初始化所在GPS位置
-	 */
-	private void initLocation() {
-
-		LocationManager locationManager;
-		String serviceName = Context.LOCATION_SERVICE;
-		locationManager = (LocationManager) this.getSystemService(serviceName);
-		// 查询条件
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		criteria.setAltitudeRequired(false);
-		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(true);
-		criteria.setPowerRequirement(Criteria.POWER_LOW);
-
-		String provider = locationManager.getBestProvider(criteria, true);
-		Location location = locationManager.getLastKnownLocation(provider);
-		if (location != null) {
-
-			lat = (int) location.getLatitude();
-			lng = (int) location.getLongitude();
-
-			pt = new GeoPoint((int) (location.getLatitude() * 1e6),
-					(int) (location.getLongitude() * 1e6));
-
-			mMapView.getController().animateTo(pt);
-			// mapController.setCenter(pt);
-
-			// 查询该经纬度值所对应的地址位置信息
-			// mMKSearch.reverseGeocode(point);
-
-			// mMKSearch.reverseGeocode(new GeoPoint((int) (lat * 1e6),
-			// (int) (lng * 1e6)));
-			// getAddress(lat, lng);
-		}
-	}
+//	/**
+//	 * 初始化所在GPS位置
+//	 */
+//	private void initLocation() {
+//
+//		LocationManager locationManager;
+//		String serviceName = Context.LOCATION_SERVICE;
+//		locationManager = (LocationManager) this.getSystemService(serviceName);
+//		// 查询条件
+//		Criteria criteria = new Criteria();
+//		criteria.setAccuracy(Criteria.ACCURACY_FINE);
+//		criteria.setAltitudeRequired(false);
+//		criteria.setBearingRequired(false);
+//		criteria.setCostAllowed(true);
+//		criteria.setPowerRequirement(Criteria.POWER_LOW);
+//
+//		String provider = locationManager.getBestProvider(criteria, true);
+//		Location location = locationManager.getLastKnownLocation(provider);
+//		if (location != null) {
+//
+//			lat = (int) location.getLatitude();
+//			lng = (int) location.getLongitude();
+//
+//			pt = new GeoPoint((int) (location.getLatitude() * 1e6),
+//					(int) (location.getLongitude() * 1e6));
+//
+//			mMapView.getController().animateTo(pt);
+//			// mapController.setCenter(pt);
+//
+//			// 查询该经纬度值所对应的地址位置信息
+//			// mMKSearch.reverseGeocode(point);
+//
+//			// mMKSearch.reverseGeocode(new GeoPoint((int) (lat * 1e6),
+//			// (int) (lng * 1e6)));
+//			// getAddress(lat, lng);
+//		}
+//	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-			exitDialog(context);
+//			exitDialog(context);
+			//点击返回键，最小化程序，进入home页面
+			Intent intents = new Intent(Intent.ACTION_MAIN);
+			intents.addCategory(Intent.CATEGORY_HOME);
+			intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intents);
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -1207,7 +1217,9 @@ public class LocationOverlay extends Activity implements OnClickListener,
 			switch (msg.what) {
 
 			case Constant.SUCCESS:
-				Tools.myToast(context, "司机已满员！");
+//				Tools.myToast(context, "司机已满员！");
+				MyToast toast = new MyToast(context,"司机已满员！");
+				toast.startMyToast();
 				showNorm();
 				break;
 			case Constant.FAILURE:
@@ -1249,7 +1261,9 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 				break;
 			case Constant.FAILURE:
-				Tools.myToast(context, "周围没有司机哦！");
+//				Tools.myToast(context, "周围没有司机哦！");
+				MyToast toast = new MyToast(context,"周围没有司机哦！");
+				toast.startMyToast();
 				break;
 
 			}
@@ -1421,8 +1435,10 @@ public class LocationOverlay extends Activity implements OnClickListener,
 			mGeoList.add(item); // List<OverlayItem> mGeoList 是存放overlayitem
 
 			MyItemizedOverlay overlay = new MyItemizedOverlay(context, maker,
-					mGeoList);
+					mGeoList,true);
 
+			overlay.onTap(pt, mMapView);//设置点击事件
+			
 			List<Overlay> list = mMapView.getOverlays();
 			list.clear();
 
@@ -1430,7 +1446,8 @@ public class LocationOverlay extends Activity implements OnClickListener,
 			mMapView.refresh();
 			mapController.animateTo(new GeoPoint((int) (lat * 1e6),
 					(int) (lng * 1e6)), null);
-
+			
+			
 			// 得到司机的信息
 			getDrivers();
 		}
