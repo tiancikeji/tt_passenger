@@ -33,7 +33,8 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.findcab.activity.PutDestinationActivity" >
+        <activity android:name="com.findcab.activity.PutDestinationActivity" 
+            	android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name="com.findcab.activity.Signup"
@@ -45,6 +46,7 @@
         </activity>
         <activity
             android:name="com.findcab.activity.LandActivity"
+            android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait" >
         </activity>
         <activity android:name="com.iflytek.mscdemo.IatActivity" >

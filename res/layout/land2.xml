@@ -74,10 +74,10 @@
             android:layout_height="40dp"
             android:layout_width="0dp"
             android:layout_weight="3"
-            android:background="@drawable/ph_verifi_btn_get_veri"
+            android:background="@drawable/ph_verifi_get_ver_n"
             android:text="@string/get_verification_num"
             android:textSize="15dp" 
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"/><!-- android:background="@drawable/ph_verifi_btn_get_veri" -->
 
     </LinearLayout>
     

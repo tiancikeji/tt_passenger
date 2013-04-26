@@ -71,7 +71,11 @@ public class PutDestinationActivity extends Activity  {
 	private  static final String ENGINE_POI = "poi";
 	private DBHelper helper;//数据库
 	
+	//CallActivity页面传入，判断是获取起点还是终点
 	private int startOrEnd;
+	//传入CallActivity页面的输入记录
+	private String address_name;
+	
 	private final int START =12;
 	private final int END = 22;
 	
@@ -83,9 +87,16 @@ public class PutDestinationActivity extends Activity  {
 		// 初始化缓存对象.
 		mSharedPreferences = getSharedPreferences(getPackageName(),MODE_PRIVATE);
 	
+		startOrEnd=getIntent().getIntExtra("putDestination",0);
+		address_name = getIntent().getStringExtra("address_name");
+		
 		initView();
 		search = new MKSearch();
 		initSearch();
+		//将传入的历史记录显示
+		if(address_name != null && !address_name.equals("")){
+			putDestination.setText(address_name);
+		}
 	}
 	
 	/**
@@ -93,19 +104,25 @@ public class PutDestinationActivity extends Activity  {
 	 */
 	private void initView(){
 		
-		startOrEnd=getIntent().getIntExtra("putDestination",0);
 		System.out.println("the startOrEnd is ----------------->"+startOrEnd);
 		
-		
 		putDestination= (EditText)findViewById(R.id.put_destination_put_txt);
+		
 		putDestination.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				// TODO Auto-generated method stub
-				//以后要加接口的，替换掉北京的
-				search.poiSearchInCity("北京", s.toString());
-				
+				if(!putDestination.getText().toString().equals("我的位置")){
+					//以后要加接口的，替换掉北京的
+					search.poiSearchInCity("北京", s.toString());
+					if(s.toString().equals("") || s.toString() == null){
+						//输入内容为空
+						initListFromDB();
+						DBListView.setVisibility(View.VISIBLE);
+						listView.setVisibility(View.GONE);
+					}
+				}
 			}
 			
 			@Override
@@ -116,7 +133,12 @@ public class PutDestinationActivity extends Activity  {
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
+				if(s.toString().equals("") || s.toString() == null){
+					//输入内容为空
+					initListFromDB();
+					DBListView.setVisibility(View.VISIBLE);
+					listView.setVisibility(View.GONE);
+				}
 			}
 		});
 		
@@ -284,7 +306,6 @@ public class PutDestinationActivity extends Activity  {
 		}
 	
 		if(pointInfoList!=null){
-			
 			for (int i = 0; i < pointInfoList.size(); i++) {
 				
 				MKPoiInfo info = pointInfoList.get(i);
@@ -300,10 +321,12 @@ public class PutDestinationActivity extends Activity  {
 		}	
 		
 
-		SimpleAdapter adapter = new SimpleAdapter(PutDestinationActivity.this, listMap, R.layout.put_destination_listview_item, 
-						new String[]{"poiName","poiAddress"}, new int[]{R.id.put_destination_listview_name,R.id.put_destination_listview_address});
-		
+//		SimpleAdapter adapter = new SimpleAdapter(PutDestinationActivity.this, listMap, R.layout.put_destination_listview_item, 
+//						new String[]{"poiName","poiAddress"}, new int[]{R.id.put_destination_listview_name,R.id.put_destination_listview_address});
+		PutDestinationActivity_Adapter adapter = new PutDestinationActivity_Adapter(PutDestinationActivity.this);
+		adapter.setAddressInfo(listMap);
 		listView.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 		
 		
 		
@@ -360,11 +383,12 @@ public class PutDestinationActivity extends Activity  {
 		if(dbListMap.size()>0){
 			dbListMap.clear();
 		}
-		
-//		Map<String,String> defaultMap= new HashMap<String,String>();
-//		defaultMap.put("poiName", "我的位置");
-//		defaultMap.put("poiAddress", "");
-//		dbListMap.add(defaultMap);
+		if(startOrEnd == START){
+			Map<String,String> defaultMap= new HashMap<String,String>();
+			defaultMap.put("poiName", "我的位置");
+			defaultMap.put("poiAddress", "");
+			dbListMap.add(defaultMap);
+		}
 		
 		int count=0;
 		Cursor cursor;
@@ -395,10 +419,15 @@ public class PutDestinationActivity extends Activity  {
 		cursor.close();
 		helper.close();
 		
-		SimpleAdapter adapter = new SimpleAdapter(PutDestinationActivity.this, dbListMap, R.layout.put_destination_listview_item, 
-				new String[]{"poiName","poiAddress"}, new int[]{R.id.put_destination_listview_name,R.id.put_destination_listview_address});
+//		SimpleAdapter adapter = new SimpleAdapter(PutDestinationActivity.this, dbListMap, R.layout.put_destination_listview_item, 
+//				new String[]{"poiName","poiAddress"}, new int[]{R.id.put_destination_listview_name,R.id.put_destination_listview_address});
 
+		PutDestinationActivity_Adapter adapter = new PutDestinationActivity_Adapter(PutDestinationActivity.this);
+		adapter.setAddressInfo(dbListMap);
 		DBListView.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+		
+//		DBListView.setAdapter(adapter);
 		
 		DBListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -406,29 +435,29 @@ public class PutDestinationActivity extends Activity  {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(arg2==0){
-					Intent intent = new Intent();
-					
-					if(startOrEnd==START){
-						
-						intent.putExtra("start", "我的位置");
-						PutDestinationActivity.this.setResult(RESULT_OK, intent);
-						PutDestinationActivity.this.finish();
-						
-					}else if(startOrEnd==END){
-						
-						intent.putExtra("end", "");
-						PutDestinationActivity.this.setResult(RESULT_OK, intent);
-						PutDestinationActivity.this.finish();
-						
-					}
-					else{
-//						Toast.makeText(PutDestinationActivity.this, "有異常", 1000);
-						MyToast toast = new MyToast(PutDestinationActivity.this,"有异常");
-						toast.startMyToast();
-					}
-				}
-				else{
+//				if(arg2==0){
+//					Intent intent = new Intent();
+//					
+//					if(startOrEnd==START){
+//						f
+//						intent.putExtra("start", "我的位置");
+//						PutDestinationActivity.this.setResult(RESULT_OK, intent);
+//						PutDestinationActivity.this.finish();
+//						
+//					}else if(startOrEnd==END){
+//						
+//						intent.putExtra("end", "");
+//						PutDestinationActivity.this.setResult(RESULT_OK, intent);
+//						PutDestinationActivity.this.finish();
+//						
+//					}
+//					else{
+////						Toast.makeText(PutDestinationActivity.this, "有異常", 1000);
+//						MyToast toast = new MyToast(PutDestinationActivity.this,"有异常");
+//						toast.startMyToast();
+//					}
+//				}
+//				else{
 					
 					Intent intent = new Intent();
 					
@@ -455,13 +484,12 @@ public class PutDestinationActivity extends Activity  {
 						MyToast toast = new MyToast(PutDestinationActivity.this,"请求失败");
 						toast.startMyToast();
 					}
-				}
+//				}
 
 			}
 		}) ;
 	}
 
-	
 	/**
 	 * 显示语音的dialog()
 	 */

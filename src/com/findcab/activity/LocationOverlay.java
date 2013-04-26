@@ -535,6 +535,8 @@ public class LocationOverlay extends Activity implements OnClickListener,
 				if (pt != null) {
 					// mMapView.refresh();
 					mMapView.getController().animateTo(pt);
+					MyToast toast = new MyToast(context,"刷新成功");
+					toast.startMyToast();
 					getDrivers();
 					// mMapView.refresh();
 
@@ -1257,7 +1259,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 				displayDrivers(true);
 				title.setText("5公里范围，" + String.valueOf(driversList.size())
 						+ "辆出租车");
-				title.setTextSize(20);
+//				title.setTextSize(20);
 
 				break;
 			case Constant.FAILURE:

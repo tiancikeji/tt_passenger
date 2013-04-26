@@ -93,7 +93,7 @@ public class IatActivity extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "[onCreate]" + savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.call);
+		setContentView(R.layout.iat_activity);
 
 		initView();
 		// 初始化转写Dialog, appid需要在http://open.voicecloud.cn获取.

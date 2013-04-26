@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -37,7 +38,9 @@ public class CallActivity extends Activity implements OnClickListener {
 
 	// private Button start_cancel, end_cancel;
 	private Button okButton, cancelButton;
-	private EditText edit_start, edit_end;
+//	private EditText edit_start, edit_end;
+	private Button button_start;
+	private Button button_end;
 	private LinearLayout linearlayout_premium;
 	private Button btn0,btn5,btn10,btn15,btn20;
 
@@ -62,9 +65,7 @@ public class CallActivity extends Activity implements OnClickListener {
 	
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
-		saveInputRecord();
 	}
 
 
@@ -74,43 +75,48 @@ public class CallActivity extends Activity implements OnClickListener {
 	private void initView() {
 
 		context = this;
-
-		edit_start = (EditText) findViewById(R.id.edit_start);
-		edit_end = (EditText) findViewById(R.id.edit_end);
+		button_start = (Button)findViewById(R.id.call_button_start);
+		button_end = (Button)findViewById(R.id.call_button_end);
 		
-		edit_start.setClickable(true);
-		edit_start.setFocusable(true);
-		edit_start.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getAction() == MotionEvent.ACTION_DOWN){
-					 getIntent= new Intent();
-					 getIntent.setClass(CallActivity.this,PutDestinationActivity.class );
-					 getIntent.putExtra("putDestination", START);
-					 startActivityForResult(getIntent,START);
-				}
-				return false;
-			}
-		});
+		button_start.setOnClickListener(this);
+		button_end.setOnClickListener(this);
+		
+//		edit_start = (EditText) findViewById(R.id.edit_start);
+//		edit_end = (EditText) findViewById(R.id.edit_end);
+		
+//		edit_start.setClickable(true);
+//		edit_start.setFocusable(true);
+//		edit_start.setOnTouchListener(new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				// TODO Auto-generated method stub
+//				if(event.getAction() == MotionEvent.ACTION_DOWN){
+//					 getIntent= new Intent();
+//					 getIntent.setClass(CallActivity.this,PutDestinationActivity.class );
+//					 getIntent.putExtra("putDestination", START);
+//					 startActivityForResult(getIntent,START);
+//				}
+//				return false;
+//			}
+//		});
 
-		edit_end.setClickable(true);
-		edit_end.setFocusable(true);
-		edit_end.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getAction() == MotionEvent.ACTION_DOWN){
-					 getIntent= new Intent();
-					 getIntent.putExtra("putDestination", END);
-					 getIntent.setClass(CallActivity.this,PutDestinationActivity.class );
-					 startActivityForResult(getIntent,END);
-				}
-				return false;
-			}
-		});
+//		edit_end.setClickable(true);
+//		edit_end.setFocusable(true);
+//		edit_end.setOnTouchListener(new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				// TODO Auto-generated method stub
+//				if(event.getAction() == MotionEvent.ACTION_DOWN){
+//					 getIntent= new Intent();
+//					 getIntent.putExtra("putDestination", END);
+//					 getIntent.setClass(CallActivity.this,PutDestinationActivity.class );
+//					 startActivityForResult(getIntent,END);
+//				}
+//				return false;
+//			}
+//		});
 		//edit_end.setOnClickListener(this);
 
 		okButton = (Button) findViewById(R.id.ok);
@@ -147,18 +153,33 @@ public class CallActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-
+		case R.id.call_button_start:
+			getIntent= new Intent();
+			getIntent.setClass(CallActivity.this,PutDestinationActivity.class );
+			getIntent.putExtra("putDestination", START);
+			getIntent.putExtra("address_name", button_start.getText().toString());
+			
+			startActivityForResult(getIntent,START);
+			break;
+		case R.id.call_button_end:
+			getIntent= new Intent();
+			getIntent.putExtra("putDestination", END);
+			getIntent.putExtra("address_name", button_end.getText().toString());
+			getIntent.setClass(CallActivity.this,PutDestinationActivity.class );
+			startActivityForResult(getIntent,END);
+			break;
 		case R.id.cancel:
-
+			clearInputRecord();
 			finish();
 			break;
 			
 		case R.id.ok:
-			
+			saveInputRecord();
 			putIntent = new Intent();
-			start = edit_start.getText().toString().trim();
-			end = edit_end.getText().toString().trim();
-			
+//			start = edit_start.getText().toString().trim();
+//			end = edit_end.getText().toString().trim();
+			start = button_start.getText().toString().trim();
+			end = button_end.getText().toString().trim();
 			putIntent.putExtra("premium", premium);
 			
 			if (!start.equals("我的位置")) {
@@ -222,8 +243,9 @@ public class CallActivity extends Activity implements OnClickListener {
 					 
 					 start = data.getStringExtra("start");
 					 System.out.println("start------>" + start);
-					 edit_start.setText(start );
-					 
+//					 edit_start.setText(start );
+					 button_start.setText(start);
+					 Log.e("返回数据", "="+start);
 					 
 				 } else {
 					 
@@ -238,8 +260,9 @@ public class CallActivity extends Activity implements OnClickListener {
 						 
 						 end = data.getStringExtra("end");
 						 System.out.println("end------>" + end);
-						 edit_end.setText(end);
-						 
+//						 edit_end.setText(end);
+						 button_end.setText(end);
+						 Log.e("返回数据", "="+end);
 					 } else {
 						 
 					 //start = startAddress;
@@ -281,10 +304,20 @@ public class CallActivity extends Activity implements OnClickListener {
 		 String temp_start = sharedata.getString("inputrecord_start", null);
 		 String temp_end = sharedata.getString("inputrecord_end", null);
 		 if(temp_start != null && !temp_start.equals("")){
-			 edit_start.setText(temp_start);
+//			 edit_start.setText(temp_start);
+			 button_start.setText(temp_start);
 		 }
 		 if(temp_end != null && !temp_end.equals("")){
-			 edit_end.setText(temp_end);
+//			 edit_end.setText(temp_end);
+			 button_end.setText(temp_end);
 		 }
+	 }
+	 
+	 private void clearInputRecord(){
+		 SharedPreferences sharedata = getSharedPreferences("data", 0);
+		 Editor temp_editor = sharedata.edit();
+		 temp_editor.putString("inputrecord_start", null);
+		 temp_editor.putString("inputrecord_end", null);
+		 temp_editor.commit();
 	 }
 }

@@ -22,9 +22,10 @@
                 android:layout_height="fill_parent"
                 android:layout_margin="10dp"
                 android:hint="请输入地点"
-                android:textSize="20dp"
+                android:textSize="15sp"
                 android:paddingLeft="10dp"
                 android:gravity="center_vertical"
+                android:selectAllOnFocus="true"
                 android:background="@drawable/ph_verifi_edit"
                  />
             <Button
@@ -39,9 +40,8 @@
         </RelativeLayout>
         <Button 
             android:id="@+id/put_destination_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -61,6 +61,7 @@
             android:id="@+id/put_destination_list"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
+            android:divider="@null"
             android:background="@drawable/put_destination_listview">
         </ListView>
         
@@ -68,6 +69,7 @@
             android:id="@+id/put_destination_dblist"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
+            android:divider="@null"
             android:background="@drawable/put_destination_listview">
         </ListView>
        

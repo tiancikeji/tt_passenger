@@ -147,7 +147,7 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 //			Toast.makeText(this.mContext, mGeoList.get(index).getTitle(),
 //					Toast.LENGTH_SHORT).show();
 
-			pop.showPopup(bitmap, mGeoList.get(index).getPoint(),200);
+			pop.showPopup(bitmap, mGeoList.get(index).getPoint(),100);
 
 		}
 		
@@ -166,7 +166,7 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				Bitmap bitmap = MyBitmap.createBitmap(popbitmap,
 						driverInfo.getName()+","+driverInfo.getCar_license()+"/n"+
 				driverInfo.getCar_type());
-				pop.showPopup(bitmap, mGeoList.get(index).getPoint(),200);
+				pop.showPopup(bitmap, mGeoList.get(index).getPoint(),50);
 			}else{
 				
 			}

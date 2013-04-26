@@ -41,14 +41,23 @@
         android:paddingRight="20dp"
         android:layout_marginTop="20dp" >
 
-        <AutoCompleteTextView
+        <!-- <AutoCompleteTextView
             android:id="@+id/edit_start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="我的位置"
-            android:inputType="textPostalAddress"/><!-- android:selectAllOnFocus="true" android:text="我的位置" -->
-
+            android:inputType="textPostalAddress"/> --><!-- android:selectAllOnFocus="true" android:text="我的位置" -->
+		
+		<Button android:id="@+id/call_button_start"  
+		    android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="我的位置"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical|left"
+            android:background="@drawable/ph_verifi_edit"
+            android:inputType="textPostalAddress"/>  <!-- android:layout_marginTop="10dp" -->
         
     </RelativeLayout>
 
@@ -61,14 +70,23 @@
         android:paddingRight="20dp"
         android:layout_marginTop="10dp"  >
 
-        <AutoCompleteTextView
+        <!-- <AutoCompleteTextView
             android:id="@+id/edit_end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="请输入目的地"
             android:inputType="textPostalAddress"
-            android:selectAllOnFocus="true" />
+            android:selectAllOnFocus="true" /> -->
+        <Button android:id="@+id/call_button_end"  
+		    android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:hint="请输入目的地"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical|left"
+            android:background="@drawable/ph_verifi_edit"
+            android:inputType="textPostalAddress"/> <!-- android:layout_marginTop="10dp" -->
     </RelativeLayout>
 	<LinearLayout 
 	    android:id="@+id/calling_premium"
@@ -77,6 +95,7 @@
         android:layout_below="@+id/endLayout"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:gravity="center"
 	    >

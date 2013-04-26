@@ -104,6 +104,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 		startLocation();
 		
 		HttpTools.checkNetWork(context);
+		
 	}
 
 	@Override
@@ -119,11 +120,16 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 		case R.id.ph_verficition_btn_get_veri:
 			switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN:
-				butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_p);
+				if(!countRunning){//如果正在倒计时,则按钮状态不变
+					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
+				}else{
+					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_p);
+				}
+				
 				break;
-//			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_CANCEL:
 //				butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
-//				break;
+				break;
 			case MotionEvent.ACTION_UP:
 				butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
 				if(!countRunning){
@@ -151,6 +157,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 				
 			}
 			break;
+			
 			
 		}
 		return false;
@@ -207,7 +214,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 				if(timer>=0){
 					butt_verification.setTextColor(Color.GRAY);
 					butt_verification.setText(msg.obj+"秒后重获");
-					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
+//					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
 //					butt_verification.setEnabled(false);
 
 					break;
@@ -216,7 +223,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 					countRunning=false;
 					butt_verification.setTextColor(Color.BLACK);
 					butt_verification.setText("获取验证码");
-					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
+//					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
 //					butt_verification.setEnabled(true);
 					break;
 				}
@@ -287,7 +294,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 
 		//输入电话号码的editview
 		phEditText = (EditText) findViewById(R.id.ph_verificition_edit_ph);
-
+		openInputMethod(phEditText);
 		//输入验证码的editview
 		edit_verification = (EditText) findViewById(R.id.ph_verificition_edit_veri);
 
@@ -296,8 +303,53 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 		butt_land.setOnClickListener(this);
 		//用来发送验证码
 		butt_verification = (Button) findViewById(R.id.ph_verficition_btn_get_veri);
-		butt_verification.setOnClickListener(this);
+//		butt_verification.setOnClickListener(this);
+		butt_verification.setOnTouchListener(new OnTouchListener(){
 
+			@Override
+			public boolean onTouch(View arg0, MotionEvent event) {
+				switch(event.getAction()){
+				case MotionEvent.ACTION_DOWN:
+					if(countRunning){//如果正在倒计时,则按钮状态不变
+						butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
+					}else{
+						butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_p);
+					}
+					
+					break;
+				case MotionEvent.ACTION_CANCEL:
+					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
+					break;
+				case MotionEvent.ACTION_UP:
+					butt_verification.setBackgroundResource(R.drawable.ph_verifi_get_ver_n);
+					if(!countRunning){
+						phNum = phEditText.getText().toString().trim();
+						timer=60;
+						if (!phNum.equals("")&&phNum.length()==11) {
+							if(HttpTools.isNetworkAvailable(LandActivity.this)){
+								countRunning=true;
+								btnChanged();
+								getVerification();
+							}else{
+								MyToast toast = new MyToast(context,"网络连接错误，请检查网络连接！");
+								toast.startMyToast();
+							}
+							
+						} else {
+							MyToast toast = new MyToast(context,"请正确输入手机号码！");
+							toast.startMyToast();
+						}
+					}else{
+						MyToast toast = new MyToast(context,"请倒计时结束后点击获取验证码！");
+						toast.startMyToast();
+					}
+					break;
+					
+				}
+				return true;
+			}
+			
+		});
 
 	}
 
@@ -523,9 +575,7 @@ public class LandActivity extends Activity implements OnClickListener,BDLocation
 	 */
 	private void openInputMethod(EditText et){
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		if(imm.isActive()){
-
-		}
+		imm.showSoftInput(et, 0);
 	}
 
 	private void saveGetCodeTime(String time){
