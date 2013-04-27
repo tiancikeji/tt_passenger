@@ -34,7 +34,8 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity android:name="com.findcab.activity.PutDestinationActivity" 
-            	android:windowSoftInputMode="adjustPan">
+            	android:windowSoftInputMode="stateVisible"
+            	android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.findcab.activity.Signup"

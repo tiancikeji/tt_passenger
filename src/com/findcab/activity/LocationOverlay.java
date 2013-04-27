@@ -669,32 +669,42 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 		case SEND:
 			if (data != null) {
-				if (data.hasExtra("premium")) {
-					premium = data.getIntExtra("premium", 0);
-					System.out.println("premium------>" + premium);
+				TripsInfo tempInfo = new TripsInfo();
+				if (data.hasExtra("appointent")) {
+				tempInfo.setAppointment(data.getStringExtra("appointent"));
 				}
-				if (data.hasExtra("start")) {
-					start = data.getStringExtra("start");
-					System.out.println("start------>" + start);
-				} else {
-					start = address;
+				if (data.hasExtra("create_at")) {
+				tempInfo.setCreated_at(data.getStringExtra("create_at"));
 				}
 				if (data.hasExtra("end")) {
-					end = data.getStringExtra("end");
-					// getGeo(end);
-					System.out.println("end------>" + end);
+				tempInfo.setEnd(data.getStringExtra("end"));
 				}
-
-				if (start == null || start.equals("")) {
-
-//					Toast.makeText(context, "无法获取当前位置，请手动输入", Toast.LENGTH_LONG).show();
-					MyToast toast = new MyToast(context,"无法获取当前位置，请手动输入");
-					toast.startMyToast();
-				} else {
-					// 发布路线
-					// getDrivers();
-					sendTrips();
+				if (data.hasExtra("end_lat")) {
+				tempInfo.setEnd_lat(data.getStringExtra("end_lat"));
 				}
+				if (data.hasExtra("end_lng")) {
+				tempInfo.setEnd_lng(data.getStringExtra("end_lng"));
+				end = data.getStringExtra("end");
+				}
+				if (data.hasExtra("id")) {
+				tempInfo.setId(data.getIntExtra("id", 0));
+				}
+				if (data.hasExtra("passenger_id")) {
+				tempInfo.setPassenger_id(data.getIntExtra("passenger_id",0));
+				}
+				if (data.hasExtra("start")){
+				tempInfo.setStart(data.getStringExtra("start"));
+				start = data.getStringExtra("start");
+				}
+				if (data.hasExtra("start_lat")) {
+				tempInfo.setStart_lat(data.getStringExtra("start_lat"));
+				}
+				if (data.hasExtra("start_lng")) {
+				tempInfo.setStart_lng(data.getStringExtra("start_lng"));
+				}
+				//通知发送路线成功
+				getConversations();
+				callingHandler.sendEmptyMessage(Constant.SUCCESS);
 			}
 			break;
 		case CANCLE_CALLING:
@@ -1337,7 +1347,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 						changeConversationsStatus("-1", id);
 					}
 					showTimeOutDialog();
-
+					waitingTime = WAITING;//718,1063,1093
 					// Intent i = new Intent(context, DialogFrist.class);
 					// startActivityForResult(i, TIMEOUT);
 

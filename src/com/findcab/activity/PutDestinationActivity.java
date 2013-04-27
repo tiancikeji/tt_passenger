@@ -344,10 +344,19 @@ public class PutDestinationActivity extends Activity  {
 				String poiName =(String)map.get("poiName");
 				String poiAddress=(String)map.get("poiAddress");
 				
-				ContentValues  values = new ContentValues();
-				values.put("POIName", poiName);
-				values.put("POIAddress", poiAddress);
-				helper.insert(values);
+				//遍历数据库中地址数据，如果数据重复则不保存
+				boolean isRepeat = false;
+				for(int i=0;i<dbListMap.size();i++){
+					if(dbListMap.get(i).get("poiName").equals(poiName)){
+						isRepeat = true;
+					}
+				}
+				if(!isRepeat){
+					ContentValues  values = new ContentValues();
+					values.put("POIName", poiName);
+					values.put("POIAddress", poiAddress);
+					helper.insert(values);
+				}
 				
 				if(startOrEnd==START){
 					

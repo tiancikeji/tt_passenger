@@ -52,6 +52,10 @@ public class TripsInfo implements Serializable {
 		}
 
 	}
+	
+	public TripsInfo(){
+		
+	}
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
