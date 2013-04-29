@@ -706,6 +706,7 @@ public class LocationOverlay extends Activity implements OnClickListener,
 				getConversations();
 				callingHandler.sendEmptyMessage(Constant.SUCCESS);
 			}
+
 			break;
 		case CANCLE_CALLING:
 			// 重新发布线路
@@ -1039,7 +1040,6 @@ public class LocationOverlay extends Activity implements OnClickListener,
 
 			}).start();
 		}
-
 	}
 
 	/**
@@ -1115,7 +1115,6 @@ public class LocationOverlay extends Activity implements OnClickListener,
 		answerTitleInfo.setText(info.getCar_license());
 
 		displapDriversForAnswer(info);
-
 	}
 
 //	/**

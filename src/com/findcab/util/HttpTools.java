@@ -302,6 +302,7 @@ public class HttpTools {
 				HttpEntity httpEntity = response.getEntity();
 				InputStream ins = httpEntity.getContent();
 				Object resultMessage = ihandler.parseResponse(ins);
+				Log.e("HttpTools", "response:"+resultMessage);
 				return resultMessage;
 			} catch (Exception e) {
 				Log.e("HttpTools", e.getMessage());

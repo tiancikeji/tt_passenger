@@ -16,15 +16,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.MKGeneralListener;
+import com.baidu.mapapi.map.MKEvent;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.findcab.R;
 import com.findcab.handler.TripsHandler;
@@ -34,7 +36,6 @@ import com.findcab.util.Constant;
 import com.findcab.util.HttpTools;
 import com.findcab.util.MapUtility;
 import com.findcab.util.Tools;
-import com.iflytek.mscdemo.IatActivity;
 
 /**
  * 叫车
@@ -42,7 +43,7 @@ import com.iflytek.mscdemo.IatActivity;
  * @author yuqunfeng
  * 
  */
-public class CallActivity extends Activity implements OnClickListener {
+public class CallActivity extends Activity implements OnClickListener,BDLocationListener {
 
 	private static final int MESSAGE_PUSHTRIP_SUCCESS = 10001;//发布路线成功
 	private static final int MESSAGE_PUSHTRIP_FAILED = 10002;//发布路线成功
@@ -76,6 +77,11 @@ public class CallActivity extends Activity implements OnClickListener {
 
 	public ProgressDialog pd;//加载进度条
 	
+	GeoPoint startGP;
+	GeoPoint endGP;
+	public static BMapManager mBMapMan = null;
+	private String mStrKey = "8BB7F0E5C9C77BD6B9B655DB928B74B6E2D838FD";
+
 	Handler messageHandler = new Handler(){
 
 		@Override
@@ -90,7 +96,7 @@ public class CallActivity extends Activity implements OnClickListener {
 
 				//跳转页面
 				putIntent = new Intent();
-				putIntent.putExtra("put_trip_tatus", "success");
+				putIntent.putExtra("put_trip_status", "success");
 				putIntent.putExtra("premium", premium);
 				//将路线信息返回LocationOverlay页面
 				putIntent.putExtra("appointent",tripsInfo.getAppointment());
@@ -103,9 +109,6 @@ public class CallActivity extends Activity implements OnClickListener {
 				putIntent.putExtra("start_lng",tripsInfo.getStart_lng());
 				putIntent.putExtra("id",tripsInfo.getId());
 				putIntent.putExtra("passenger_id",tripsInfo.getPassenger_id());
-				
-				
-				
 				setResult(1, putIntent);
 				CallActivity.this.finish();
 				
@@ -133,6 +136,7 @@ public class CallActivity extends Activity implements OnClickListener {
 		ownerID = sharedata.getInt("psID", 0);
 		
 		Tools.init();
+		initManager();
 		initView();
 		getInputRecord();//获取最近一次输入记录
 	}
@@ -141,6 +145,13 @@ public class CallActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onStop() {
 		super.onStop();
+	}
+
+
+	@Override
+	protected void onResume() {
+		mBMapMan.start();
+		super.onResume();
 	}
 
 
@@ -211,11 +222,13 @@ public class CallActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.ok:
-			start = button_start.getText().toString().trim();
+//			start = button_start.getText().toString().trim();
 			end = button_end.getText().toString().trim();
 			//判断起点终点是否输入
 			if (!end.equals("")) {
+				//不能获取经纬度，因此此代码注释
 				sendTrips();
+				
 			}else{
 				MyToast toast = new MyToast(context,"请输入目的地");
 				toast.startMyToast();
@@ -310,6 +323,8 @@ public class CallActivity extends Activity implements OnClickListener {
 		return super.onKeyDown(keyCode, event);
 	}
 	
+	
+	
 	private void setBtn(){
 		btn0.setBackgroundResource(R.drawable.calling_premium_n);
 		btn0.setTextColor(BLACK);
@@ -348,10 +363,12 @@ public class CallActivity extends Activity implements OnClickListener {
 		if(temp_start != null && !temp_start.equals("")){
 			//			 edit_start.setText(temp_start);
 			button_start.setText(temp_start);
+			startGP = getGeo(temp_start);
 		}
 		if(temp_end != null && !temp_end.equals("")){
 			//			 edit_end.setText(temp_end);
 			button_end.setText(temp_end);
+			endGP = getGeo(temp_end);
 		}
 	}
 
@@ -374,19 +391,19 @@ public class CallActivity extends Activity implements OnClickListener {
 			new Thread(new Runnable() {
 				public void run() {
 					try {
-						GeoPoint startGP;
-						if(start.equals("我的位置")){
+						if(button_start.getText().toString().trim().equals("我的位置")){
 							startGP = getGeo(start);
 						}else{
 							startGP = getGeo(start);
 						}
-						GeoPoint endGP = getGeo(end);
+						endGP = getGeo(end);
 						
 						double startLat = startGP.getLatitudeE6() / (1e6);
 						double startLng = startGP.getLongitudeE6() / (1e6);
 						double endLat = endGP.getLatitudeE6()/(1e6);
 						double endLng = endGP.getLongitudeE6()/(1e6);
 						
+						Log.e("发布路线时的经纬度", startLat+"="+startLng+"="+endLat+"="+endLng);
 						Map<String, String> map = new HashMap<String, String>();
 						map.put("trip[passenger_id]", String.valueOf(ownerID));
 						map.put("trip[start]", start);
@@ -403,6 +420,7 @@ public class CallActivity extends Activity implements OnClickListener {
 								Constant.TRIPS, map, new TripsHandler());
 
 						if (tripsInfo != null) {
+							Log.e("测试发布路线是否成功", tripsInfo.getCreated_at()+"="+tripsInfo.getStart()+"="+tripsInfo.toString());
 							// 表示发送成功 可以接收会话通知（isGetConversation用来控制接收会话的循环条件）
 //							isGetConversation = true;
 //							getConversations();
@@ -426,8 +444,50 @@ public class CallActivity extends Activity implements OnClickListener {
 	 * @return 返回地址的坐标 simsunny
 	 */
 	private GeoPoint getGeo(String locationName) {
+		Log.e("解析地址", locationName);
 		JSONObject object = MapUtility.getLocationInfo(locationName);
 		GeoPoint point = MapUtility.getGeoPoint(object);
+		Log.e("解析地址-Point", point.getLatitudeE6()+"="+point.getLongitudeE6());
 		return point;
+	}
+
+	/**
+	 * 初始化BMapManager
+	 */
+	private void initManager() {
+		context = this;
+		if (mBMapMan == null) {
+			mBMapMan = new BMapManager(this);
+		}
+		mBMapMan.init(mStrKey, new MyGeneralListener());
+
+	}
+
+	@Override
+	public void onReceiveLocation(BDLocation arg0) {
+
+	}
+
+
+	@Override
+	public void onReceivePoi(BDLocation arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	class MyGeneralListener implements MKGeneralListener {
+		@Override
+		public void onGetNetworkState(int iError) {
+			Log.d("MyGeneralListener", "onGetNetworkState error is " + iError);
+		}
+
+		@Override
+		public void onGetPermissionState(int iError) {
+			Log.d("MyGeneralListener", "onGetPermissionState error is "
+					+ iError);
+			if (iError == MKEvent.ERROR_PERMISSION_DENIED) {
+
+			}
+		}
 	}
 }
